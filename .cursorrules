@@ -1,0 +1,288 @@
+# Mike Carney Wellbeing Hub - Development Rules
+
+## Project Overview
+This is a Next.js 15.5.4 staff wellbeing hub for Mike Carney Group, hosted on Vercel with WCAG 2.2 AA compliance.
+
+## Architecture Principles
+
+### Framework & Routing
+- Use Next.js 15.5.4 App Router exclusively
+- Server Components by default; Client Components only when needed ('use client')
+- Server Actions for mutations
+- API Routes for third-party integrations only
+
+### TypeScript
+- Strict mode enabled
+- Explicit types for all functions, props, and state
+- No 'any' types - use 'unknown' and type guards instead
+- Use type imports: `import type { ... }`
+
+### Authentication & Authorization
+- NextAuth.js v5 for all authentication
+- Domain-restricted login (see auth.config.ts for allowed domains)
+- Role-based access: 'staff', 'editor', 'admin'
+- Protect routes via middleware.ts
+- Check permissions server-side in pages and API routes
+
+### Database
+- Vercel Postgres with Drizzle ORM
+- Schema defined in lib/db/schema.ts
+- Use transactions for multi-step operations
+- Always use parameterized queries (Drizzle handles this)
+
+## Code Style & Quality
+
+### Component Structure
+```typescript
+// Server Component (default)
+import { auth } from '@/auth';
+import { db } from '@/lib/db';
+
+export default async function Page() {
+  const session = await auth();
+  const data = await db.query...
+  
+  return <div>...</div>;
+}
+
+// Client Component (when needed)
+'use client';
+
+import { useState } from 'react';
+
+export function Component() {
+  const [state, setState] = useState(...);
+  
+  return <div>...</div>;
+}
+```
+
+### Naming Conventions
+- Components: PascalCase (e.g., `UserMenu.tsx`)
+- Files: kebab-case for utilities (e.g., `file-upload.ts`)
+- Database tables: snake_case (e.g., `user_submissions`)
+- CSS classes: kebab-case (following Tailwind)
+
+### Styling
+- Tailwind CSS for all styling
+- Use semantic class names from globals.css (.btn, .card, .input)
+- Mobile-first responsive design
+- Consistent spacing scale (4, 8, 16, 24, 32, 48, 64px)
+
+## Accessibility (WCAG 2.2 AA)
+
+### Required Practices
+- Semantic HTML5 elements (`<header>`, `<nav>`, `<main>`, `<article>`, etc.)
+- Proper heading hierarchy (h1 → h2 → h3, no skipping)
+- `aria-label` or `aria-labelledby` for all interactive elements without visible labels
+- `aria-hidden="true"` on decorative icons
+- Focus visible styles (handled in globals.css)
+- Color contrast minimum 4.5:1 for text
+- Keyboard navigation support
+- Skip to main content link
+
+### Form Accessibility
+```typescript
+<label htmlFor="email" className="label">
+  Email Address
+</label>
+<input
+  id="email"
+  type="email"
+  className="input"
+  aria-required="true"
+  aria-invalid={error ? "true" : "false"}
+/>
+{error && <p role="alert" className="text-red-600">{error}</p>}
+```
+
+### Button Accessibility
+```typescript
+<button
+  type="button"
+  aria-label="Close dialog"
+  onClick={handleClose}
+>
+  <X aria-hidden="true" />
+</button>
+```
+
+## Security Best Practices
+
+### Authentication
+- Always verify session server-side
+- Never trust client-side role checks
+- Use middleware for route protection
+- Validate all user inputs
+
+### Data Access
+```typescript
+// ✅ Good - check permissions
+const session = await auth();
+if (!session || session.user.role !== 'admin') {
+  return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
+}
+
+// ❌ Bad - no permission check
+const data = await db.delete(table)...
+```
+
+### File Uploads
+- Validate file types and sizes
+- Use Vercel Blob for storage
+- Never serve files from user input paths directly
+- Sanitize filenames
+
+## Performance
+
+### Images
+- Use Next.js `<Image>` component
+- Provide width and height
+- Use `priority` for above-fold images
+- Optimize with Vercel image optimization
+
+### Data Fetching
+- Use server components for initial data
+- Implement loading states
+- Use Suspense boundaries where appropriate
+- Cache with `cache: 'force-cache'` for static data
+
+### Database
+- Add indexes for frequently queried fields
+- Limit result sets (use `.limit()`)
+- Use `.select()` to fetch only needed columns
+- Avoid N+1 queries
+
+## Testing & Validation
+
+### Before Committing
+- Run `npm run lint` and fix all errors
+- Run `npm run build` to check for build errors
+- Test authentication flows
+- Verify accessibility with keyboard navigation
+- Check responsive design on mobile and desktop
+
+### Code Review Checklist
+- [ ] TypeScript types are correct
+- [ ] Accessibility requirements met
+- [ ] Proper error handling
+- [ ] Loading states implemented
+- [ ] Permission checks in place
+- [ ] Responsive on mobile
+- [ ] No console.log in production code
+
+## Error Handling
+
+### Server Components
+```typescript
+try {
+  const data = await fetchData();
+  return <Component data={data} />;
+} catch (error) {
+  console.error('Error loading data:', error);
+  return <ErrorState />;
+}
+```
+
+### Client Components
+```typescript
+const [error, setError] = useState<string | null>(null);
+
+try {
+  await submitForm(data);
+} catch (err) {
+  setError('Failed to submit. Please try again.');
+}
+```
+
+### API Routes
+```typescript
+export async function POST(request: Request) {
+  try {
+    const session = await auth();
+    if (!session) {
+      return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
+    }
+    
+    const body = await request.json();
+    // Validate with Zod or similar
+    
+    const result = await performAction(body);
+    return NextResponse.json(result);
+    
+  } catch (error) {
+    console.error('API error:', error);
+    return NextResponse.json(
+      { error: 'Internal server error' },
+      { status: 500 }
+    );
+  }
+}
+```
+
+## Git Workflow
+
+### Commit Messages
+- Use conventional commits format
+- Format: `type(scope): description`
+- Types: feat, fix, docs, style, refactor, test, chore
+- Example: `feat(auth): add email OTP login`
+
+### Branch Naming
+- feature/feature-name
+- fix/bug-description
+- refactor/component-name
+
+## Deployment
+
+### Environment Variables
+- Never commit `.env` files
+- Document all required variables in README
+- Use Vercel for production environment variables
+- Different values for development, preview, production
+
+### Pre-deployment Checks
+- [ ] All environment variables configured
+- [ ] Database migrations run
+- [ ] Build succeeds locally
+- [ ] No console errors
+- [ ] Authentication flows work
+- [ ] File uploads work
+
+## Maintenance
+
+### Regular Tasks
+- Update dependencies monthly
+- Review and respond to submissions weekly
+- Monitor error logs
+- Back up database regularly
+- Review user access permissions
+
+### Adding New Features
+1. Check authentication requirements
+2. Define database schema changes
+3. Create types/interfaces
+4. Implement server components first
+5. Add client interactivity as needed
+6. Test accessibility
+7. Add to admin panel if needed
+8. Update documentation
+
+## Support & Documentation
+
+### Code Comments
+- Explain "why" not "what"
+- Document complex business logic
+- Add JSDoc for utility functions
+- Keep comments up to date
+
+### When in Doubt
+- Prefer server components
+- Choose accessibility over aesthetics
+- Validate all inputs
+- Check permissions server-side
+- Follow existing patterns in codebase
+
+---
+
+These rules ensure consistency, security, accessibility, and maintainability of the Mike Carney Wellbeing Hub.

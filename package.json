@@ -1,0 +1,46 @@
+{
+  "name": "mike-carney-wellbeing-hub",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start",
+    "lint": "next lint",
+    "db:push": "drizzle-kit push",
+    "db:studio": "drizzle-kit studio"
+  },
+  "dependencies": {
+    "next": "15.5.4",
+    "react": "^19.0.0",
+    "react-dom": "^19.0.0",
+    "next-auth": "^5.0.0-beta.25",
+    "@auth/core": "^0.37.2",
+    "@auth/drizzle-adapter": "^1.7.0",
+    "@vercel/postgres": "^0.10.0",
+    "@vercel/blob": "^0.27.0",
+    "drizzle-orm": "^0.36.4",
+    "bcryptjs": "^2.4.3",
+    "zod": "^3.24.1",
+    "lucide-react": "^0.468.0",
+    "date-fns": "^4.1.0",
+    "react-hook-form": "^7.54.2",
+    "@hookform/resolvers": "^3.9.1",
+    "nodemailer": "^6.9.16",
+    "@paralleldrive/cuid2": "^2.2.2"
+  },
+  "devDependencies": {
+    "@types/node": "^22",
+    "@types/react": "^19",
+    "@types/react-dom": "^19",
+    "@types/bcryptjs": "^2.4.6",
+    "@types/nodemailer": "^6.4.16",
+    "typescript": "^5",
+    "eslint": "^9",
+    "eslint-config-next": "15.5.4",
+    "tailwindcss": "^3.4.1",
+    "postcss": "^8",
+    "autoprefixer": "^10.4.20",
+    "drizzle-kit": "^0.28.1"
+  }
+}
