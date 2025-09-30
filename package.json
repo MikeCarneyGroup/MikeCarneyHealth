@@ -16,10 +16,10 @@
     "react-dom": "^19.0.0",
     "next-auth": "^5.0.0-beta.25",
     "@auth/core": "^0.37.2",
-    "@auth/drizzle-adapter": "^1.7.0",
+    "@auth/drizzle-adapter": "^1.10.0",
     "@vercel/postgres": "^0.10.0",
     "@vercel/blob": "^0.27.0",
-    "drizzle-orm": "^0.36.4",
+    "drizzle-orm": "^0.44.5",
     "bcryptjs": "^2.4.3",
     "zod": "^3.24.1",
     "lucide-react": "^0.468.0",
@@ -41,6 +41,6 @@
     "tailwindcss": "^3.4.1",
     "postcss": "^8",
     "autoprefixer": "^10.4.20",
-    "drizzle-kit": "^0.28.1"
+    "drizzle-kit": "^0.31.5"
   }
 }

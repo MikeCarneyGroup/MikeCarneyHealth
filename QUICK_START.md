@@ -14,6 +14,8 @@ This guide will get you up and running in 10 minutes.
 npm install
 ```
 
+> **Note**: You may see warnings about deprecated packages and moderate vulnerabilities in development dependencies (esbuild/drizzle-kit). These are safe to ignore as they only affect local development tools, not production builds. See "Common Issues" section below for details.
+
 ## Step 2: Environment Setup (3 minutes)
 
 Create a `.env.local` file in the root directory with these essential variables:
@@ -131,6 +133,13 @@ After signing in, explore:
 3. Use the forms to create content
 
 ## Common Issues & Solutions
+
+### "npm audit shows vulnerabilities"
+- **Status**: Safe to ignore
+- **Reason**: Vulnerabilities are in development-only dependencies (drizzle-kit → esbuild)
+- **Impact**: Only affects local dev server, NOT production on Vercel
+- **Action**: No action needed - continue with development
+- **Future**: Will be resolved when drizzle-kit updates their dependencies
 
 ### "Database connection error"
 - Check `POSTGRES_URL` is correct
