@@ -19,7 +19,6 @@ export function LoginForm() {
     'charterstowerstoyota.com.au',
     'mikecarneymahindra.com.au',
     '4wdc.com.au',
-    'gmail.com', // Temporary for testing - REMOVE in production
   ];
 
   const handleEmailLogin = async (e: React.FormEvent) => {
