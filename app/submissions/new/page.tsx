@@ -5,10 +5,11 @@ import { SubmissionForm } from '@/components/submissions/SubmissionForm';
 export default async function NewSubmissionPage({
   searchParams,
 }: {
-  searchParams: { type?: string };
+  searchParams: Promise<{ type?: string }>;
 }) {
   const session = await auth();
-  const type = searchParams.type === 'idea' ? 'idea' : 'story';
+  const { type: typeParam } = await searchParams;
+  const type = typeParam === 'idea' ? 'idea' : 'story';
 
   return (
     <div className="py-8">

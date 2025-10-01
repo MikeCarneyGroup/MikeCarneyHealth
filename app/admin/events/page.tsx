@@ -1,0 +1,78 @@
+import { auth } from '@/auth';
+import { redirect } from 'next/navigation';
+import { db } from '@/lib/db';
+import { events } from '@/lib/db/schema';
+import { desc } from 'drizzle-orm';
+import Link from 'next/link';
+import { Plus } from 'lucide-react';
+import { format } from 'date-fns';
+
+export const metadata = {
+  title: 'Manage Events - Admin',
+};
+
+export default async function AdminEventsPage() {
+  const session = await auth();
+  
+  if (!session || (session.user.role !== 'editor' && session.user.role !== 'admin')) {
+    redirect('/dashboard');
+  }
+
+  const allEvents = await db
+    .select()
+    .from(events)
+    .orderBy(desc(events.startDate));
+
+  return (
+    <div>
+      <div className="flex items-center justify-between mb-6">
+        <h1 className="text-3xl font-bold">Events</h1>
+        <Link href="/admin/events/new" className="btn-primary px-4 py-2 inline-flex items-center gap-2">
+          <Plus className="h-4 w-4" aria-hidden="true" />
+          New Event
+        </Link>
+      </div>
+
+      {allEvents.length > 0 ? (
+        <div className="space-y-4">
+          {allEvents.map((event) => (
+            <article key={event.id} className="card">
+              <div className="flex items-start justify-between gap-4">
+                <div className="flex-1">
+                  <div className="flex items-center gap-2 mb-2">
+                    <h3 className="font-semibold">{event.title}</h3>
+                    {!event.published && (
+                      <span className="text-xs px-2 py-1 rounded bg-gray-100 text-gray-800">
+                        Draft
+                      </span>
+                    )}
+                  </div>
+                  {event.description && (
+                    <p className="text-sm text-gray-600 line-clamp-2">{event.description}</p>
+                  )}
+                  <div className="text-xs text-gray-500 mt-2">
+                    <p>{format(new Date(event.startDate), 'PPP p')}</p>
+                    {event.location && <p>📍 {event.location}</p>}
+                  </div>
+                </div>
+                <Link
+                  href={`/admin/events/${event.id}`}
+                  className="btn-outline px-4 py-2 text-sm"
+                >
+                  Edit
+                </Link>
+              </div>
+            </article>
+          ))}
+        </div>
+      ) : (
+        <div className="card text-center py-12">
+          <p className="text-gray-500">No events yet.</p>
+          <Link href="/admin/events/new" className="btn-primary px-4 py-2 mt-4 inline-block">
+            Create First Event
+          </Link>
+        </div>
+      )}
+    </div>
+  );
+}

@@ -19,6 +19,7 @@ export function LoginForm() {
     'charterstowerstoyota.com.au',
     'mikecarneymahindra.com.au',
     '4wdc.com.au',
+    'gmail.com', // Temporary for testing - REMOVE in production
   ];
 
   const handleEmailLogin = async (e: React.FormEvent) => {
@@ -72,7 +73,8 @@ export function LoginForm() {
       )}
 
       <div className="space-y-4">
-        <button
+        {/* Azure AD login temporarily disabled - uncomment when credentials available */}
+        {/* <button
           type="button"
           onClick={handleAzureLogin}
           disabled={isLoading}
@@ -82,16 +84,17 @@ export function LoginForm() {
             <path d="M0 0h10.931v10.931H0zm12.069 0H23v10.931H12.069zM0 12.069h10.931V23H0zm12.069 0H23V23H12.069z"/>
           </svg>
           Sign in with Microsoft 365
-        </button>
+        </button> */}
 
-        <div className="relative">
+        {/* Divider - show only when both login methods available */}
+        {/* <div className="relative">
           <div className="absolute inset-0 flex items-center">
             <div className="w-full border-t border-gray-300"></div>
           </div>
           <div className="relative flex justify-center text-sm">
             <span className="px-2 bg-white text-gray-500">Or continue with</span>
           </div>
-        </div>
+        </div> */}
 
         <form onSubmit={handleEmailLogin}>
           <div className="mb-4">

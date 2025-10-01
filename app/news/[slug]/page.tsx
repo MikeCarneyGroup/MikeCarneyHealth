@@ -5,9 +5,10 @@ import { notFound } from 'next/navigation';
 import Link from 'next/link';
 import { ArrowLeft } from 'lucide-react';
 
-export async function generateMetadata({ params }: { params: { slug: string } }) {
+export async function generateMetadata({ params }: { params: Promise<{ slug: string }> }) {
+  const { slug } = await params;
   const article = await db.query.news.findFirst({
-    where: and(eq(news.slug, params.slug), eq(news.published, true)),
+    where: and(eq(news.slug, slug), eq(news.published, true)),
   });
 
   if (!article) return { title: 'Article Not Found' };
@@ -18,9 +19,10 @@ export async function generateMetadata({ params }: { params: { slug: string } })
   };
 }
 
-export default async function NewsArticlePage({ params }: { params: { slug: string } }) {
+export default async function NewsArticlePage({ params }: { params: Promise<{ slug: string }> }) {
+  const { slug } = await params;
   const article = await db.query.news.findFirst({
-    where: and(eq(news.slug, params.slug), eq(news.published, true)),
+    where: and(eq(news.slug, slug), eq(news.published, true)),
   });
 
   if (!article) {

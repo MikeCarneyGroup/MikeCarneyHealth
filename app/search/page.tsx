@@ -11,9 +11,10 @@ export const metadata = {
 export default async function SearchPage({
   searchParams,
 }: {
-  searchParams: { q?: string };
+  searchParams: Promise<{ q?: string }>;
 }) {
-  const query = searchParams.q || '';
+  const { q } = await searchParams;
+  const query = q || '';
 
   let results = {
     news: [] as any[],
