@@ -33,7 +33,6 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
         'charterstowerstoyota.com.au',
         'mikecarneymahindra.com.au',
         '4wdc.com.au',
-        'gmail.com', // Temporary for testing
       ];
       
       if (!ALLOWED_DOMAINS.includes(emailDomain)) {
