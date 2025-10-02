@@ -11,48 +11,68 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
   ...authConfig,
   session: { strategy: 'jwt' },
   callbacks: {
-    ...authConfig.callbacks,
-    async signIn({ user, account, profile, email }) {
-      // Call the existing signIn callback from authConfig
-      const isAllowed = await authConfig.callbacks?.signIn?.({ user, account, profile, email, credentials: undefined });
-      if (!isAllowed) return false;
+    async authorized({ auth, request }) {
+      return authConfig.callbacks!.authorized!({ auth, request });
+    },
+    async signIn({ user, account, profile, email, credentials }) {
+      // Check if email domain is allowed
+      const emailAddress = user.email?.toLowerCase();
+      if (!emailAddress) return false;
+
+      const emailDomain = emailAddress.split('@')[1];
+      const ALLOWED_DOMAINS = [
+        'lexusoftownsville.com.au',
+        'mikecarneytoyota.com.au',
+        'inghamtoyota.com.au',
+        'charterstowerstoyota.com.au',
+        'mikecarneymahindra.com.au',
+        '4wdc.com.au',
+        'gmail.com', // Temporary for testing
+      ];
+      
+      if (!ALLOWED_DOMAINS.includes(emailDomain)) {
+        return false;
+      }
 
       // Ensure user exists in database
-      if (user.email) {
-        const existingUser = await db.query.users.findFirst({
-          where: eq(users.email, user.email),
-        });
+      const existingUser = await db.query.users.findFirst({
+        where: eq(users.email, emailAddress),
+      });
 
-        if (!existingUser) {
-          // Create new user
-          await db.insert(users).values({
-            email: user.email,
-            name: user.name || null,
-            image: user.image || null,
-            emailVerified: email?.verificationRequest ? null : new Date(),
-            role: 'staff',
-          });
-        } else {
-          // Update existing user ID for session
-          user.id = existingUser.id;
-          user.role = existingUser.role;
-        }
+      if (!existingUser) {
+        // Create new user
+        await db.insert(users).values({
+          email: emailAddress,
+          name: user.name || null,
+          image: user.image || null,
+          emailVerified: email?.verificationRequest ? null : new Date(),
+          role: 'staff',
+        });
       }
 
       return true;
     },
-    async jwt({ token, user, account, profile }) {
-      // Add role to token on sign in
-      if (user) {
+    async jwt({ token, user, account, trigger }) {
+      // On sign in, fetch user from database and add to token
+      if (user?.email) {
         const dbUser = await db.query.users.findFirst({
-          where: eq(users.email, user.email!),
+          where: eq(users.email, user.email),
         });
         if (dbUser) {
           token.id = dbUser.id;
           token.role = dbUser.role;
+          token.email = dbUser.email;
         }
       }
       return token;
+    },
+    async session({ session, token }) {
+      if (session.user && token) {
+        session.user.id = (token.id as string) || '';
+        session.user.role = (token.role as 'staff' | 'editor' | 'admin') || 'staff';
+        session.user.email = (token.email as string) || session.user.email || '';
+      }
+      return session;
     },
   },
   providers: [
