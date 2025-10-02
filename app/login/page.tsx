@@ -1,3 +1,4 @@
+import { Suspense } from 'react';
 import { auth } from '@/auth';
 import { redirect } from 'next/navigation';
 import { LoginForm } from '@/components/auth/LoginForm';
@@ -18,7 +19,17 @@ export default async function LoginPage() {
             Sign in to access the staff wellbeing hub
           </p>
         </div>
-        <LoginForm />
+        <Suspense fallback={
+          <div className="card">
+            <div className="animate-pulse space-y-4">
+              <div className="h-4 bg-gray-200 rounded w-3/4"></div>
+              <div className="h-10 bg-gray-200 rounded"></div>
+              <div className="h-10 bg-gray-200 rounded"></div>
+            </div>
+          </div>
+        }>
+          <LoginForm />
+        </Suspense>
       </div>
     </div>
   );
