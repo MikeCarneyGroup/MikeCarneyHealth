@@ -31,6 +31,7 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
         'mikecarneytoyota.com.au',
         'inghamtoyota.com.au',
         'charterstowerstoyota.com.au',
+        'charterstowersthmahindra.com.au',
         'mikecarneymahindra.com.au',
         '4wdc.com.au',
       ];

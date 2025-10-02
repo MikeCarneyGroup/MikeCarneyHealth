@@ -17,6 +17,7 @@ export function LoginForm() {
     'mikecarneytoyota.com.au',
     'inghamtoyota.com.au',
     'charterstowerstoyota.com.au',
+    'charterstowersthmahindra.com.au',
     'mikecarneymahindra.com.au',
     '4wdc.com.au',
   ];

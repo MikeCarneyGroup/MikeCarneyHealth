@@ -59,8 +59,9 @@ export default function CareersPage() {
             <BrandCard name="Mike Carney Toyota" />
             <BrandCard name="Ingham Toyota" />
             <BrandCard name="Charters Towers Toyota" />
+            <BrandCard name="Charters Towers Mahindra" />
             <BrandCard name="Mike Carney Mahindra" />
-            <BrandCard name="4WD Centre" />
+            <BrandCard name="4WD Central" />
           </div>
         </div>
       </section>
