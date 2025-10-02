@@ -1,14 +1,20 @@
 import NextAuth from 'next-auth';
+import { DrizzleAdapter } from '@auth/drizzle-adapter';
 import AzureADProvider from 'next-auth/providers/azure-ad';
 import EmailProvider from 'next-auth/providers/email';
 import { db } from './lib/db';
-import { users } from './lib/db/schema';
+import { users, accounts, verificationTokens } from './lib/db/schema';
 import { authConfig } from './auth.config';
 import { sendVerificationRequest } from './lib/auth/send-verification';
 import { eq } from 'drizzle-orm';
 
 export const { handlers, auth, signIn, signOut } = NextAuth({
   ...authConfig,
+  adapter: DrizzleAdapter(db, {
+    usersTable: users,
+    accountsTable: accounts,
+    verificationTokensTable: verificationTokens,
+  }),
   session: { strategy: 'jwt' },
   callbacks: {
     async authorized({ auth, request }) {
@@ -32,22 +38,6 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
       
       if (!ALLOWED_DOMAINS.includes(emailDomain)) {
         return false;
-      }
-
-      // Ensure user exists in database
-      const existingUser = await db.query.users.findFirst({
-        where: eq(users.email, emailAddress),
-      });
-
-      if (!existingUser) {
-        // Create new user
-        await db.insert(users).values({
-          email: emailAddress,
-          name: user.name || null,
-          image: user.image || null,
-          emailVerified: email?.verificationRequest ? null : new Date(),
-          role: 'staff',
-        });
       }
 
       return true;
