@@ -52,7 +52,7 @@ export function Navigation({ session }: NavigationProps) {
             </Link>
           );
         })}
-        {session?.user.role === 'admin' || session?.user.role === 'editor' ? (
+        {session?.user?.role === 'admin' || session?.user?.role === 'editor' ? (
           <Link
             href="/admin"
             className={`px-3 py-2 rounded-md text-sm font-medium transition-colors ${
@@ -103,7 +103,7 @@ export function Navigation({ session }: NavigationProps) {
                 </Link>
               );
             })}
-            {session?.user.role === 'admin' || session?.user.role === 'editor' ? (
+            {session?.user?.role === 'admin' || session?.user?.role === 'editor' ? (
               <Link
                 href="/admin"
                 className={`px-3 py-2 rounded-md text-sm font-medium ${

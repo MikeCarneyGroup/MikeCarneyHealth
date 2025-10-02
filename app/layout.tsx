@@ -7,8 +7,14 @@ import { SpeedInsights } from '@vercel/speed-insights/next';
 import { GoogleAnalytics } from '@next/third-parties/google';
 
 export const metadata: Metadata = {
-  title: 'Mike Carney Wellbeing Hub',
+  title: {
+    default: 'Mike Carney Wellbeing Hub',
+    template: '%s | Mike Carney Wellbeing Hub',
+  },
   description: 'Staff wellbeing hub and information resource for Mike Carney Group',
+  icons: {
+    icon: '/favicon.ico',
+  },
 };
 
 export default function RootLayout({
