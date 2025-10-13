@@ -1,6 +1,6 @@
 # Mike Carney Wellbeing Hub
 
-A modern, WCAG-compliant staff wellbeing hub and information resource for Mike Carney Group, built with Next.js 15.5.4 and hosted on Vercel.
+A modern, WCAG-compliant staff wellbeing hub and information resource for Mike Carney Group, built with Next.js and hosted on Vercel.
 
 ## Features
 
