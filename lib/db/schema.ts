@@ -1,4 +1,4 @@
-import { pgTable, text, timestamp, boolean, integer, pgEnum } from 'drizzle-orm/pg-core';
+import { pgTable, text, timestamp, boolean, integer, pgEnum, primaryKey } from 'drizzle-orm/pg-core';
 import { createId } from '@paralleldrive/cuid2';
 
 // Enums
@@ -46,7 +46,9 @@ export const verificationTokens = pgTable('verification_tokens', {
   identifier: text('identifier').notNull(),
   token: text('token').notNull(),
   expires: timestamp('expires', { mode: 'date' }).notNull(),
-});
+}, (table) => ({
+  compoundKey: primaryKey({ columns: [table.identifier, table.token] }),
+}));
 
 // Announcements
 export const announcements = pgTable('announcements', {
