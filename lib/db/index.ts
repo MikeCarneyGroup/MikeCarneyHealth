@@ -1,9 +1,11 @@
 import { drizzle } from 'drizzle-orm/node-postgres';
-import postgres from 'postgres';
+import { Pool } from 'pg';
 import * as schema from './schema';
 
-// Use the postgres package directly with the connection string
-const connectionString = process.env.POSTGRES_URL!;
-const client = postgres(connectionString);
+// Create a connection pool using the pg package
+const pool = new Pool({
+  connectionString: process.env.POSTGRES_URL,
+  ssl: process.env.NODE_ENV === 'production' ? { rejectUnauthorized: false } : false,
+});
 
-export const db = drizzle(client, { schema });
+export const db = drizzle(pool, { schema });
