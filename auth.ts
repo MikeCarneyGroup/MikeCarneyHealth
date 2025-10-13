@@ -1,5 +1,5 @@
 import NextAuth from 'next-auth';
-import { DrizzleAdapter } from '@auth/drizzle-adapter';
+import NeonAdapter from '@auth/neon-adapter';
 import AzureADProvider from 'next-auth/providers/azure-ad';
 import EmailProvider from 'next-auth/providers/email';
 import { db } from './lib/db';
@@ -10,7 +10,7 @@ import { eq } from 'drizzle-orm';
 
 export const { handlers, auth, signIn, signOut } = NextAuth({
   ...authConfig,
-  adapter: DrizzleAdapter(db, {
+  adapter: NeonAdapter(db, {
     usersTable: users,
     accountsTable: accounts,
     verificationTokensTable: verificationTokens,
