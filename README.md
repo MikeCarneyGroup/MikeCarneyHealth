@@ -17,9 +17,9 @@ A modern, WCAG-compliant staff wellbeing hub and information resource for Mike C
 
 ## Tech Stack
 
-- **Framework**: Next.js 15.5.4 (App Router)
+- **Framework**: Next.js (App Router)
 - **Language**: TypeScript
-- **Authentication**: NextAuth.js v5 (Azure AD & Email providers)
+- **Authentication**: NextAuth.js (Azure AD & Email providers)
 - **Database**: Vercel Postgres with Drizzle ORM
 - **File Storage**: Vercel Blob
 - **Styling**: Tailwind CSS
@@ -39,67 +39,67 @@ A modern, WCAG-compliant staff wellbeing hub and information resource for Mike C
 
 1. **Clone the repository**
 
-```bash
-git clone <your-repo-url>
-cd MikeCarneyHealth
-```
+      ```bash
+      git clone <your-repo-url>
+      cd MikeCarneyHealth
+      ```
 
 2. **Install dependencies**
 
-```bash
-npm install
-# or
-pnpm install
-# or
-yarn install
-```
+      ```bash
+      npm install
+      # or
+      pnpm install
+      # or
+      yarn install
+      ```
 
 3. **Set up environment variables**
 
-Create a `.env.local` file in the root directory:
+      Create a `.env.local` file in the root directory:
 
-```env
-# Database (Vercel Postgres)
-POSTGRES_URL="your-postgres-url"
-POSTGRES_PRISMA_URL="your-prisma-url"
-POSTGRES_URL_NON_POOLING="your-non-pooling-url"
-POSTGRES_USER="your-user"
-POSTGRES_HOST="your-host"
-POSTGRES_PASSWORD="your-password"
-POSTGRES_DATABASE="your-database"
+      ```env
+      # Database (Vercel Postgres)
+      POSTGRES_URL="your-postgres-url"
+      POSTGRES_PRISMA_URL="your-prisma-url"
+      POSTGRES_URL_NON_POOLING="your-non-pooling-url"
+      POSTGRES_USER="your-user"
+      POSTGRES_HOST="your-host"
+      POSTGRES_PASSWORD="your-password"
+      POSTGRES_DATABASE="your-database"
 
-# Auth (NextAuth.js)
-AUTH_SECRET="generate-with: openssl rand -base64 32"
-AUTH_TRUST_HOST=true
+      # Auth (NextAuth.js)
+      AUTH_SECRET="generate-with: openssl rand -base64 32"
+      AUTH_TRUST_HOST=true
 
-# Azure AD (Microsoft 365)
-AUTH_AZURE_AD_ID="your-azure-client-id"
-AUTH_AZURE_AD_SECRET="your-azure-client-secret"
-AUTH_AZURE_AD_TENANT_ID="common" # or your specific tenant
+      # Azure AD (Microsoft 365)
+      AUTH_AZURE_AD_ID="your-azure-client-id"
+      AUTH_AZURE_AD_SECRET="your-azure-client-secret"
+      AUTH_AZURE_AD_TENANT_ID="common" # or your specific tenant
 
-# Email (OTP)
-EMAIL_SERVER_HOST="smtp.gmail.com"
-EMAIL_SERVER_PORT="587"
-EMAIL_SERVER_USER="your-email@gmail.com"
-EMAIL_SERVER_PASSWORD="your-app-password"
-EMAIL_FROM="noreply@mikecarney.com.au"
+      # Email (OTP)
+      EMAIL_SERVER_HOST="smtp.gmail.com"
+      EMAIL_SERVER_PORT="587"
+      EMAIL_SERVER_USER="your-email@gmail.com"
+      EMAIL_SERVER_PASSWORD="your-app-password"
+      EMAIL_FROM="noreply@mikecarney.com.au"
 
-# Vercel Blob Storage
-BLOB_READ_WRITE_TOKEN="your-blob-token"
+      # Vercel Blob Storage
+      BLOB_READ_WRITE_TOKEN="your-blob-token"
 
-# App URL
-NEXT_PUBLIC_APP_URL="http://localhost:3000"
-```
+      # App URL
+      NEXT_PUBLIC_APP_URL="http://localhost:3000"
+      ```
 
 4. **Set up the database**
 
-```bash
-# Push database schema
-npm run db:push
+      ```bash
+      # Push database schema
+      npm run db:push
 
-# Optional: Open Drizzle Studio to view/edit database
-npm run db:studio
-```
+      # Optional: Open Drizzle Studio to view/edit database
+      npm run db:studio
+      ```
 
 5. **Run the development server**
 
