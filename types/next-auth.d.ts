@@ -20,3 +20,9 @@ declare module 'next-auth/jwt' {
     email?: string;
   }
 }
+
+declare module '@auth/core/adapters' {
+  interface AdapterUser {
+    role: 'staff' | 'editor' | 'admin';
+  }
+}

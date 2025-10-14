@@ -43,16 +43,11 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
       return true;
     },
     async jwt({ token, user, account, trigger }) {
-      // On sign in, fetch user from database and add to token
-      if (user?.email) {
-        const dbUser = await db.query.users.findFirst({
-          where: eq(users.email, user.email),
-        });
-        if (dbUser) {
-          token.id = dbUser.id;
-          token.role = dbUser.role;
-          token.email = dbUser.email;
-        }
+      // On sign in, add user info to token
+      if (user) {
+        token.id = user.id;
+        token.role = user.role;
+        token.email = user.email;
       }
       return token;
     },
