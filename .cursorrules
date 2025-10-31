@@ -1,12 +1,12 @@
 # Mike Carney Wellbeing Hub - Development Rules
 
 ## Project Overview
-This is a Next.js 15.5.4 staff wellbeing hub for Mike Carney Group, hosted on Vercel with WCAG 2.2 AA compliance.
+This is a Next.js staff wellbeing hub for Mike Carney Group, hosted on Vercel with WCAG 2.2 AA compliance.
 
 ## Architecture Principles
 
 ### Framework & Routing
-- Use Next.js 15.5.4 App Router exclusively
+- Use Next.js App Router exclusively
 - Server Components by default; Client Components only when needed ('use client')
 - Server Actions for mutations
 - API Routes for third-party integrations only

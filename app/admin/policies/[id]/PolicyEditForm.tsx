@@ -9,6 +9,7 @@ import { updatePolicy, deletePolicy } from './actions';
 import { Trash2 } from 'lucide-react';
 import type { policies } from '@/lib/db/schema';
 import type { InferSelectModel } from 'drizzle-orm';
+import { POLICY_CATEGORIES, FILE_SIZE_LIMITS } from '@/lib/constants/admin';
 
 const policySchema = z.object({
   title: z.string().min(1, 'Title is required').max(200, 'Title is too long'),
@@ -19,16 +20,6 @@ const policySchema = z.object({
 
 type PolicyFormData = z.infer<typeof policySchema>;
 type Policy = InferSelectModel<typeof policies>;
-
-const POLICY_CATEGORIES = [
-  'Workplace Health & Safety',
-  'Employment',
-  'Code of Conduct',
-  'Leave & Benefits',
-  'IT & Security',
-  'Training & Development',
-  'Other',
-];
 
 interface PolicyEditFormProps {
   policy: Policy;
@@ -65,8 +56,8 @@ export function PolicyEditForm({ policy }: PolicyEditFormProps) {
         setSelectedFile(null);
         return;
       }
-      // Validate file size (10MB limit)
-      if (file.size > 10 * 1024 * 1024) {
+      // Validate file size
+      if (file.size > FILE_SIZE_LIMITS.POLICY_PDF) {
         setError('File size must be less than 10MB');
         setSelectedFile(null);
         return;

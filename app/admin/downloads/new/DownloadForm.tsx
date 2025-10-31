@@ -6,6 +6,7 @@ import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';
 import { createDownload } from './actions';
+import { DOWNLOAD_CATEGORIES, ALLOWED_DOCUMENT_TYPES, FILE_SIZE_LIMITS } from '@/lib/constants/admin';
 
 const downloadSchema = z.object({
   title: z.string().min(1, 'Title is required').max(200, 'Title is too long'),
@@ -15,16 +16,6 @@ const downloadSchema = z.object({
 });
 
 type DownloadFormData = z.infer<typeof downloadSchema>;
-
-const DOWNLOAD_CATEGORIES = [
-  'Forms',
-  'Guides',
-  'Templates',
-  'Training Materials',
-  'Health & Safety',
-  'HR Documents',
-  'Other',
-];
 
 export function DownloadForm() {
   const router = useRouter();
@@ -46,23 +37,15 @@ export function DownloadForm() {
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (file) {
-      // Validate file type (PDF, DOC, DOCX, XLS, XLSX)
-      const allowedTypes = [
-        'application/pdf',
-        'application/msword',
-        'application/vnd.openxmlformats-officedocument.wordprocessingml.document',
-        'application/vnd.ms-excel',
-        'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
-      ];
-      
-      if (!allowedTypes.includes(file.type)) {
+      // Validate file type
+      if (!ALLOWED_DOCUMENT_TYPES.includes(file.type as any)) {
         setError('Please upload a PDF, Word, or Excel file');
         setSelectedFile(null);
         return;
       }
       
-      // Validate file size (10MB limit)
-      if (file.size > 10 * 1024 * 1024) {
+      // Validate file size
+      if (file.size > FILE_SIZE_LIMITS.DOWNLOAD) {
         setError('File size must be less than 10MB');
         setSelectedFile(null);
         return;
