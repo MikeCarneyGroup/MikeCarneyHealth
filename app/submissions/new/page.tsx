@@ -1,5 +1,4 @@
 import { auth } from '@/auth';
-import { redirect } from 'next/navigation';
 import { SubmissionForm } from '@/components/submissions/SubmissionForm';
 
 export default async function NewSubmissionPage({

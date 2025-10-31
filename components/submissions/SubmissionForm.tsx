@@ -30,7 +30,7 @@ export function SubmissionForm({ type, userId }: SubmissionFormProps) {
       } else {
         alert('Failed to submit. Please try again.');
       }
-    } catch (error) {
+    } catch {
       alert('An error occurred. Please try again.');
     } finally {
       setIsSubmitting(false);
@@ -80,7 +80,7 @@ export function SubmissionForm({ type, userId }: SubmissionFormProps) {
       <div className="bg-blue-50 border border-blue-200 rounded-md p-4 mb-6">
         <p className="text-sm text-blue-900">
           <strong>Note:</strong> Your submission will be reviewed by our team before being published. 
-          You'll be notified once it's been reviewed.
+          You&apos;ll be notified once it&apos;s been reviewed.
         </p>
       </div>
 

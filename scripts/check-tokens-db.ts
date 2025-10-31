@@ -20,7 +20,7 @@ async function checkTokens() {
     if (result.rows.length === 0) {
       console.log('✅ No tokens in database');
     } else {
-      result.rows.forEach((row: any, index: number) => {
+      result.rows.forEach((row, index: number) => {
         console.log(`Token ${index + 1}:`);
         console.log(`  Email: ${row.identifier}`);
         console.log(`  Token: ${row.token.substring(0, 20)}...`);

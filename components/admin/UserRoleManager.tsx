@@ -30,7 +30,7 @@ export function UserRoleManager({ userId, currentRole }: UserRoleManagerProps) {
       } else {
         alert('Failed to update role');
       }
-    } catch (error) {
+    } catch {
       alert('An error occurred');
     } finally {
       setIsUpdating(false);

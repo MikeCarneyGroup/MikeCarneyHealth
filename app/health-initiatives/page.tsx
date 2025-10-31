@@ -12,7 +12,7 @@ export default function HealthInitiativesPage() {
         <div className="container-custom">
           <h1 className="text-4xl md:text-5xl font-bold mb-4">Health Initiatives</h1>
           <p className="text-xl opacity-90 max-w-3xl">
-            We're committed to supporting the health and wellbeing of our staff through various programs and initiatives.
+            We&apos;re committed to supporting the health and wellbeing of our staff through various programs and initiatives.
           </p>
         </div>
       </section>

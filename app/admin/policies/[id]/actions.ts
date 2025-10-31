@@ -7,7 +7,6 @@ import { eq } from 'drizzle-orm';
 import { slugify, generateUniqueSlug } from '@/lib/utils/slugify';
 import { uploadFile } from '@/lib/utils/file-upload';
 import { revalidatePath } from 'next/cache';
-import { redirect } from 'next/navigation';
 
 interface UpdatePolicyData {
   id: string;

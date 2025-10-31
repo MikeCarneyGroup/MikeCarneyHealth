@@ -50,7 +50,7 @@ export default async function SubmissionsPage() {
               <div>
                 <h2 className="text-xl font-semibold mb-2">Submit an Idea</h2>
                 <p className="text-gray-600 text-sm">
-                  Have a suggestion for improving our workplace? We'd love to hear your ideas!
+                  Have a suggestion for improving our workplace? We&apos;d love to hear your ideas!
                 </p>
               </div>
             </div>
@@ -96,7 +96,7 @@ export default async function SubmissionsPage() {
           </div>
         ) : (
           <div className="card text-center py-8">
-            <p className="text-gray-500">You haven't submitted anything yet.</p>
+            <p className="text-gray-500">You haven&apos;t submitted anything yet.</p>
             <p className="text-sm text-gray-400 mt-2">Click one of the options above to get started!</p>
           </div>
         )}

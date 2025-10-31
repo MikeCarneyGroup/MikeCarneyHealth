@@ -28,7 +28,7 @@ export function SubmissionReviewForm({ submissionId }: SubmissionReviewFormProps
       } else {
         alert('Failed to update submission');
       }
-    } catch (error) {
+    } catch {
       alert('An error occurred');
     } finally {
       setIsSubmitting(false);

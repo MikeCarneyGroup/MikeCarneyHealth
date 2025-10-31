@@ -27,7 +27,7 @@ export default async function DashboardPage() {
             Welcome back, {session?.user?.name || 'Staff Member'}
           </h1>
           <p className="text-gray-600">
-            Here's what's happening at Mike Carney Group
+            Here&apos;s what&apos;s happening at Mike Carney Group
           </p>
         </div>
 

@@ -39,11 +39,6 @@ export function LoginForm() {
     setIsLoading(false);
   };
 
-  const handleAzureLogin = async () => {
-    setIsLoading(true);
-    await signIn('azure-ad', { callbackUrl: '/dashboard' });
-  };
-
   if (emailSent) {
     return (
       <div className="card text-center">

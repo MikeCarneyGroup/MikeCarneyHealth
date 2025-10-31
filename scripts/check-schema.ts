@@ -17,7 +17,7 @@ async function checkSchema() {
     `;
     
     console.log('Table columns:');
-    result.rows.forEach((row: any) => {
+    result.rows.forEach((row) => {
       console.log(`  - ${row.column_name}: ${row.data_type} (nullable: ${row.is_nullable})`);
     });
     
@@ -31,7 +31,7 @@ async function checkSchema() {
     `;
     
     console.log('\nTable constraints:');
-    constraints.rows.forEach((row: any) => {
+    constraints.rows.forEach((row) => {
       console.log(`  - ${row.constraint_name}: ${row.constraint_type}`);
     });
     
@@ -49,7 +49,7 @@ async function checkSchema() {
     if (primaryKey.rows.length === 0) {
       console.log('  ❌ NO PRIMARY KEY FOUND!');
     } else {
-      primaryKey.rows.forEach((row: any) => {
+      primaryKey.rows.forEach((row) => {
         console.log(`  ✅ ${row.column_name}`);
       });
     }

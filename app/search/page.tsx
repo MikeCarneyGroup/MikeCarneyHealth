@@ -17,9 +17,9 @@ export default async function SearchPage({
   const query = q || '';
 
   let results = {
-    news: [] as any[],
-    policies: [] as any[],
-    events: [] as any[],
+    news: [] as Array<typeof news.$inferSelect>,
+    policies: [] as Array<typeof policies.$inferSelect>,
+    events: [] as Array<typeof events.$inferSelect>,
   };
 
   if (query.trim()) {
@@ -78,7 +78,7 @@ export default async function SearchPage({
         {query && (
           <>
             <p className="text-gray-600 mb-6">
-              Found {totalResults} result{totalResults !== 1 ? 's' : ''} for "{query}"
+              Found {totalResults} result{totalResults !== 1 ? 's' : ''} for &quot;{query}&quot;
             </p>
 
             {totalResults === 0 && (

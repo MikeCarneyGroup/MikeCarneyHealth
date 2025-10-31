@@ -33,7 +33,7 @@ export default function MCHPage() {
             <h2 className="text-3xl font-bold mb-4">Welcome to Your Gym</h2>
             <p className="text-lg text-gray-600">
               Mike Carney Health is our dedicated fitness facility, exclusively available to Mike Carney Group staff 
-              and their families. We're committed to supporting your health and fitness journey.
+              and their families. We&apos;re committed to supporting your health and fitness journey.
             </p>
           </div>
 

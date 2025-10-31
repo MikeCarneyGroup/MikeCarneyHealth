@@ -1,6 +1,5 @@
 import NextAuth from 'next-auth';
 import { DrizzleAdapter } from '@auth/drizzle-adapter';
-import AzureADProvider from 'next-auth/providers/azure-ad';
 import EmailProvider from 'next-auth/providers/email';
 import { db } from './lib/db';
 import { users, accounts, verificationTokens } from './lib/db/schema';
@@ -20,7 +19,7 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
     async authorized({ auth, request }) {
       return authConfig.callbacks!.authorized!({ auth, request });
     },
-    async signIn({ user, account, profile, email, credentials }) {
+      async signIn({ user }) {
       // Check if email domain is allowed
       const emailAddress = user.email?.toLowerCase();
       if (!emailAddress) return false;
@@ -42,7 +41,7 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
 
       return true;
     },
-    async jwt({ token, user, account, trigger }) {
+    async jwt({ token, user }) {
       // On sign in, fetch user from database and add to token
       if (user?.email) {
         const dbUser = await db.query.users.findFirst({

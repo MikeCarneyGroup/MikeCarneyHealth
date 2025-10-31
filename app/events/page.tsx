@@ -66,7 +66,7 @@ function EventCard({
   event,
   isPast,
 }: {
-  event: any;
+  event: typeof events.$inferSelect;
   isPast: boolean;
 }) {
   const startDate = new Date(event.startDate);

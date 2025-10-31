@@ -51,7 +51,7 @@ export function DownloadEditForm({ download }: DownloadEditFormProps) {
     const file = e.target.files?.[0];
     if (file) {
       // Validate file type
-      if (!ALLOWED_DOCUMENT_TYPES.includes(file.type as any)) {
+      if (!ALLOWED_DOCUMENT_TYPES.includes(file.type as (typeof ALLOWED_DOCUMENT_TYPES)[number])) {
         setError('Please upload a PDF, Word, or Excel file');
         setSelectedFile(null);
         return;

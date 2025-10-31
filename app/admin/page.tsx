@@ -1,7 +1,8 @@
 import { db } from '@/lib/db';
-import { announcements, news, events, policies, submissions, users, downloads } from '@/lib/db/schema';
+import { news, events, policies, submissions, users, downloads } from '@/lib/db/schema';
 import { count, eq } from 'drizzle-orm';
-import { Newspaper, Calendar, FileText, MessageSquare, Users, CheckCircle, Clock, Download } from 'lucide-react';
+import { Newspaper, Calendar, FileText, MessageSquare, Users, Download } from 'lucide-react';
+import Link from 'next/link';
 
 export const metadata = {
   title: 'Admin Overview - Mike Carney Wellbeing Hub',
@@ -75,15 +76,15 @@ export default async function AdminOverviewPage() {
         <div className="card">
           <h2 className="text-lg font-semibold mb-4">Quick Actions</h2>
           <div className="space-y-2">
-            <a href="/admin/announcements/new" className="block px-4 py-2 rounded bg-primary-50 hover:bg-primary-100 text-primary-900 transition-colors">
+            <Link href="/admin/announcements/new" className="block px-4 py-2 rounded bg-primary-50 hover:bg-primary-100 text-primary-900 transition-colors">
               Create Announcement
-            </a>
-            <a href="/admin/news/new" className="block px-4 py-2 rounded bg-primary-50 hover:bg-primary-100 text-primary-900 transition-colors">
+            </Link>
+            <Link href="/admin/news/new" className="block px-4 py-2 rounded bg-primary-50 hover:bg-primary-100 text-primary-900 transition-colors">
               Create News Article
-            </a>
-            <a href="/admin/events/new" className="block px-4 py-2 rounded bg-primary-50 hover:bg-primary-100 text-primary-900 transition-colors">
+            </Link>
+            <Link href="/admin/events/new" className="block px-4 py-2 rounded bg-primary-50 hover:bg-primary-100 text-primary-900 transition-colors">
               Create Event
-            </a>
+            </Link>
           </div>
         </div>
 

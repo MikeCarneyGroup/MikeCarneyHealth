@@ -8,9 +8,8 @@ export async function sendVerificationRequest({
 }: {
   identifier: string;
   url: string;
-  provider: any;
+  provider: { from?: string };
 }) {
-  const { host } = new URL(url);
   
   // Initialize Mailgun client
   const mailgun = new Mailgun(FormData);
@@ -27,8 +26,8 @@ export async function sendVerificationRequest({
       from: `Mike Carney Wellbeing Hub <${from}>`,
       to: [email],
       subject: 'Sign in to Mike Carney Wellbeing Hub',
-      text: text({ url, host }),
-      html: html({ url, host }),
+      text: text({ url }),
+      html: html({ url }),
     });
   } catch (error) {
     console.error('Failed to send verification email:', error);
@@ -36,7 +35,7 @@ export async function sendVerificationRequest({
   }
 }
 
-function html({ url, host }: { url: string; host: string }) {
+function html({ url }: { url: string; host?: string }) {
   const brandColor = '#0284c7';
   const color = {
     background: '#f9fafb',
@@ -85,6 +84,6 @@ function html({ url, host }: { url: string; host: string }) {
 `;
 }
 
-function text({ url, host }: { url: string; host: string }) {
+function text({ url }: { url: string; host?: string }) {
   return `Sign in to Mike Carney Wellbeing Hub\n\nClick the link below to sign in:\n${url}\n\nIf you did not request this email, you can safely ignore it.\n`;
 }

@@ -1,7 +1,4 @@
 import type { NextAuthConfig } from 'next-auth';
-import AzureADProvider from 'next-auth/providers/azure-ad';
-import EmailProvider from 'next-auth/providers/email';
-import { sendVerificationRequest } from './lib/auth/send-verification';
 
 const ALLOWED_DOMAINS = [
   'lexusoftownsville.com.au',
@@ -35,7 +32,7 @@ export const authConfig = {
       }
       return true;
     },
-    async signIn({ user, account, profile }) {
+    async signIn({ user }) {
       // Check if email domain is allowed
       const email = user.email?.toLowerCase();
       if (!email) return false;
