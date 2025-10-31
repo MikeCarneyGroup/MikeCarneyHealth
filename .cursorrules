@@ -18,7 +18,7 @@ This is a Next.js staff wellbeing hub for Mike Carney Group, hosted on Vercel wi
 - Use type imports: `import type { ... }`
 
 ### Authentication & Authorization
-- NextAuth.js v5 for all authentication
+- NextAuth.js for all authentication
 - Domain-restricted login (see auth.config.ts for allowed domains)
 - Role-based access: 'staff', 'editor', 'admin'
 - Protect routes via middleware.ts
@@ -68,6 +68,41 @@ export function Component() {
 - Use semantic class names from globals.css (.btn, .card, .input)
 - Mobile-first responsive design
 - Consistent spacing scale (4, 8, 16, 24, 32, 48, 64px)
+
+### DRY (Don't Repeat Yourself) Principle
+- Centralize reusable constants, types, and utilities
+- Store shared constants in `lib/constants/` (e.g., categories, validation rules)
+- Extract common logic into reusable utility functions
+- Avoid duplicating form validation, category lists, or configuration across components
+- Use TypeScript `as const` for readonly arrays to maintain type safety
+
+#### Constants Management
+```typescript
+// ✅ Good - centralized constants
+// lib/constants/admin.ts
+export const POLICY_CATEGORIES = [
+  'Workplace Health & Safety',
+  'Employment',
+  // ...
+] as const;
+
+// In component
+import { POLICY_CATEGORIES } from '@/lib/constants/admin';
+
+// ❌ Bad - duplicated constants
+const POLICY_CATEGORIES = ['Workplace Health & Safety', ...]; // In multiple files
+```
+
+#### When to Extract
+- Same array/object used in 2+ places
+- Magic numbers or strings repeated (e.g., file size limits, timeouts)
+- Shared validation rules or schemas
+- Common configuration values (e.g., API endpoints, status options)
+
+#### File Organization
+- Constants: `lib/constants/[domain].ts` (e.g., `admin.ts`, `validation.ts`)
+- Shared utilities: `lib/utils/[name].ts`
+- Shared types: `lib/types/[domain].ts` or co-located with constants using type exports
 
 ## Accessibility (WCAG 2.2 AA)
 
@@ -170,6 +205,7 @@ const data = await db.delete(table)...
 - [ ] Permission checks in place
 - [ ] Responsive on mobile
 - [ ] No console.log in production code
+- [ ] DRY principle followed (no duplicated constants/logic)
 
 ## Error Handling
 
@@ -262,11 +298,12 @@ export async function POST(request: Request) {
 1. Check authentication requirements
 2. Define database schema changes
 3. Create types/interfaces
-4. Implement server components first
-5. Add client interactivity as needed
-6. Test accessibility
-7. Add to admin panel if needed
-8. Update documentation
+4. Identify reusable constants/utilities (apply DRY)
+5. Implement server components first
+6. Add client interactivity as needed
+7. Test accessibility
+8. Add to admin panel if needed
+9. Update documentation
 
 ## Support & Documentation
 
