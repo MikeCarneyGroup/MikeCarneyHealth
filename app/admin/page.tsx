@@ -1,7 +1,7 @@
 import { db } from '@/lib/db';
-import { announcements, news, events, policies, submissions, users } from '@/lib/db/schema';
+import { announcements, news, events, policies, submissions, users, downloads } from '@/lib/db/schema';
 import { count, eq } from 'drizzle-orm';
-import { Newspaper, Calendar, FileText, MessageSquare, Users, CheckCircle, Clock } from 'lucide-react';
+import { Newspaper, Calendar, FileText, MessageSquare, Users, CheckCircle, Clock, Download } from 'lucide-react';
 
 export const metadata = {
   title: 'Admin Overview - Mike Carney Wellbeing Hub',
@@ -14,12 +14,14 @@ export default async function AdminOverviewPage() {
     policiesCount,
     pendingSubmissions,
     totalUsers,
+    downloadsCount,
   ] = await Promise.all([
     db.select({ count: count() }).from(news).then(r => r[0].count),
     db.select({ count: count() }).from(events).then(r => r[0].count),
     db.select({ count: count() }).from(policies).then(r => r[0].count),
     db.select({ count: count() }).from(submissions).where(eq(submissions.status, 'pending')).then(r => r[0].count),
     db.select({ count: count() }).from(users).then(r => r[0].count),
+    db.select({ count: count() }).from(downloads).then(r => r[0].count),
   ]);
 
   return (
@@ -60,6 +62,12 @@ export default async function AdminOverviewPage() {
           title="Total Users"
           value={totalUsers}
           href="/admin/users"
+        />
+        <StatCard
+          icon={<Download className="h-6 w-6" />}
+          title="Downloads"
+          value={downloadsCount}
+          href="/admin/downloads"
         />
       </div>
 
