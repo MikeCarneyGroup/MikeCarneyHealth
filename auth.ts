@@ -75,14 +75,14 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
     // }),
     EmailProvider({
       server: {
-        host: process.env.EMAIL_SERVER_HOST,
-        port: Number(process.env.EMAIL_SERVER_PORT),
+        host: 'not-used',
+        port: 587,
         auth: {
-          user: process.env.EMAIL_SERVER_USER,
-          pass: process.env.EMAIL_SERVER_PASSWORD,
+          user: 'not-used',
+          pass: 'not-used',
         },
       },
-      from: process.env.EMAIL_FROM,
+      from: process.env.MAILGUN_FROM_EMAIL || 'noreply@mikecarneyhealth.com',
       sendVerificationRequest,
     }),
   ],

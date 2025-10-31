@@ -1,4 +1,5 @@
-import { createTransport } from 'nodemailer';
+import FormData from 'form-data';
+import Mailgun from 'mailgun.js';
 
 export async function sendVerificationRequest({
   identifier: email,
@@ -10,19 +11,28 @@ export async function sendVerificationRequest({
   provider: any;
 }) {
   const { host } = new URL(url);
-  const transport = createTransport(provider.server);
   
-  const result = await transport.sendMail({
-    to: email,
-    from: provider.from,
-    subject: `Sign in to Mike Carney Wellbeing Hub`,
-    text: text({ url, host }),
-    html: html({ url, host }),
+  // Initialize Mailgun client
+  const mailgun = new Mailgun(FormData);
+  const mg = mailgun.client({
+    username: 'api',
+    key: process.env.MAILGUN_API_KEY || '',
   });
 
-  const failed = result.rejected?.filter(Boolean) || [];
-  if (failed.length) {
-    throw new Error(`Email(s) (${failed.join(', ')}) could not be sent`);
+  const domain = process.env.MAILGUN_DOMAIN || '';
+  const from = process.env.MAILGUN_FROM_EMAIL || provider.from;
+
+  try {
+    await mg.messages.create(domain, {
+      from: `Mike Carney Wellbeing Hub <${from}>`,
+      to: [email],
+      subject: 'Sign in to Mike Carney Wellbeing Hub',
+      text: text({ url, host }),
+      html: html({ url, host }),
+    });
+  } catch (error) {
+    console.error('Failed to send verification email:', error);
+    throw new Error('Failed to send verification email');
   }
 }
 
