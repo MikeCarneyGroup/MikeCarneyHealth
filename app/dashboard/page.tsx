@@ -16,7 +16,7 @@ export default async function DashboardPage() {
   const [recentNews, upcomingEvents, recentAnnouncements] = await Promise.all([
     db.select().from(news).where(eq(news.published, true)).orderBy(desc(news.createdAt)).limit(3),
     db.select().from(events).where(eq(events.published, true)).orderBy(desc(events.startDate)).limit(3),
-    db.select().from(announcements).orderBy(desc(announcements.createdAt)).limit(3),
+    db.select().from(announcements).where(eq(announcements.published, true)).orderBy(desc(announcements.createdAt)).limit(3),
   ]);
 
   return (
@@ -61,17 +61,26 @@ export default async function DashboardPage() {
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
           {/* Announcements */}
           <section>
-            <h2 className="text-2xl font-bold mb-4">Recent Announcements</h2>
+            <div className="flex items-center justify-between mb-4">
+              <h2 className="text-2xl font-bold">Recent Announcements</h2>
+              <Link href="/announcements" className="text-sm text-primary-600 hover:text-primary-700">
+                View all
+              </Link>
+            </div>
             {recentAnnouncements.length > 0 ? (
               <div className="space-y-4">
                 {recentAnnouncements.map((announcement) => (
-                  <article key={announcement.id} className="card">
+                  <Link
+                    key={announcement.id}
+                    href={`/announcements/${announcement.id}`}
+                    className="card hover:shadow-md transition-shadow block"
+                  >
                     <h3 className="font-semibold mb-1">{announcement.title}</h3>
                     <p className="text-sm text-gray-600 line-clamp-2">{announcement.content}</p>
                     <time className="text-xs text-gray-500 mt-2 block">
                       {new Date(announcement.createdAt).toLocaleDateString('en-AU')}
                     </time>
-                  </article>
+                  </Link>
                 ))}
               </div>
             ) : (
@@ -90,14 +99,18 @@ export default async function DashboardPage() {
             {upcomingEvents.length > 0 ? (
               <div className="space-y-4">
                 {upcomingEvents.map((event) => (
-                  <article key={event.id} className="card">
+                  <Link
+                    key={event.id}
+                    href={`/events/${event.id}`}
+                    className="card hover:shadow-md transition-shadow block"
+                  >
                     <h3 className="font-semibold mb-1">{event.title}</h3>
-                    <p className="text-sm text-gray-600 mb-2">{event.description}</p>
+                    <p className="text-sm text-gray-600 mb-2 line-clamp-2">{event.description}</p>
                     <div className="flex items-center gap-2 text-xs text-gray-500">
                       <Calendar className="h-4 w-4" aria-hidden="true" />
                       <time>{new Date(event.startDate).toLocaleDateString('en-AU')}</time>
                     </div>
-                  </article>
+                  </Link>
                 ))}
               </div>
             ) : (

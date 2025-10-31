@@ -3,6 +3,7 @@ import { events } from '@/lib/db/schema';
 import { desc, eq } from 'drizzle-orm';
 import { Calendar, MapPin, Clock } from 'lucide-react';
 import { format } from 'date-fns';
+import Link from 'next/link';
 
 export const metadata = {
   title: 'Events - Mike Carney Wellbeing Hub',
@@ -72,7 +73,10 @@ function EventCard({
   const endDate = event.endDate ? new Date(event.endDate) : null;
 
   return (
-    <article className={`card ${isPast ? 'opacity-60' : ''}`}>
+    <Link
+      href={`/events/${event.id}`}
+      className={`card hover:shadow-md transition-shadow block ${isPast ? 'opacity-60' : ''}`}
+    >
       <div className="flex items-start gap-4">
         <div className="flex flex-col items-center justify-center bg-primary-100 text-primary-900 rounded-lg px-3 py-2 min-w-[60px]">
           <span className="text-xs font-medium uppercase">
@@ -85,7 +89,7 @@ function EventCard({
         <div className="flex-1">
           <h3 className="text-lg font-semibold mb-2">{event.title}</h3>
           {event.description && (
-            <p className="text-gray-600 text-sm mb-3">{event.description}</p>
+            <p className="text-gray-600 text-sm mb-3 line-clamp-2">{event.description}</p>
           )}
           <div className="space-y-1 text-sm text-gray-500">
             <div className="flex items-center gap-2">
@@ -104,6 +108,6 @@ function EventCard({
           </div>
         </div>
       </div>
-    </article>
+    </Link>
   );
 }
