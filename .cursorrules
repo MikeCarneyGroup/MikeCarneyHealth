@@ -21,7 +21,7 @@ This is a Next.js staff wellbeing hub for Mike Carney Group, hosted on Vercel wi
 - NextAuth.js for all authentication
 - Domain-restricted login (see auth.config.ts for allowed domains)
 - Role-based access: 'staff', 'editor', 'admin'
-- Protect routes via middleware.ts
+- Protect routes via proxy.ts
 - Check permissions server-side in pages and API routes
 
 ### Database
@@ -147,7 +147,7 @@ const POLICY_CATEGORIES = ['Workplace Health & Safety', ...]; // In multiple fil
 ### Authentication
 - Always verify session server-side
 - Never trust client-side role checks
-- Use middleware for route protection
+- Use proxy for route protection
 - Validate all user inputs
 
 ### Data Access

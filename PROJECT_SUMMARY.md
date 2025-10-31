@@ -55,7 +55,7 @@ A modern, WCAG 2.2 AA compliant staff wellbeing hub built with Next.js 15.5.4 fo
 ## 🏗️ Technical Architecture
 
 ### Frontend
-- **Framework**: Next.js 15.5.4 (App Router)
+- **Framework**: Next.js (App Router)
 - **Language**: TypeScript (strict mode)
 - **Styling**: Tailwind CSS
 - **Icons**: Lucide React
@@ -141,7 +141,7 @@ mike-carney-wellbeing-hub/
 │   └── MCH-Logo.png
 ├── auth.config.ts              # Auth configuration
 ├── auth.ts                     # Auth handlers
-├── middleware.ts               # Route protection
+├── proxy.ts                    # Route protection
 ├── drizzle.config.ts          # Database config
 ├── tailwind.config.ts         # Tailwind config
 ├── next.config.ts             # Next.js config
@@ -342,7 +342,7 @@ http://localhost:3000
 
 **Built for**: Mike Carney Group
 **Purpose**: Staff Wellbeing & Information Hub
-**Platform**: Vercel (Next.js 15.5.4)
+**Platform**: Vercel (Next.js)
 **Compliance**: WCAG 2.2 AA
 
 ---

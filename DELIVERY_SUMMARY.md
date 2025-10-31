@@ -4,7 +4,7 @@
 
 **Client**: Mike Carney Group  
 **Project**: Staff Wellbeing Hub  
-**Technology**: Next.js 15.5.4 (App Router, TypeScript)  
+**Technology**: Next.js (App Router, TypeScript)  
 **Hosting**: Vercel Platform  
 **Status**: ✅ Complete and Ready for Deployment  
 
@@ -16,7 +16,7 @@
 
 | Requirement | Status | Notes |
 |------------|--------|-------|
-| Next.js 15.5.4 with App Router | ✅ Complete | TypeScript, latest version |
+| Next.js with App Router | ✅ Complete | TypeScript, latest version |
 | Public sections | ✅ Complete | Health Initiatives, Careers |
 | Private sections | ✅ Complete | News, MCH, Policies, Events, Downloads, Submissions |
 | Microsoft 365 authentication | ✅ Complete | Azure AD / Entra ID integration |
@@ -46,7 +46,7 @@
 - ✅ `tailwind.config.ts` - Tailwind CSS setup
 - ✅ `postcss.config.mjs` - PostCSS configuration
 - ✅ `drizzle.config.ts` - Database configuration
-- ✅ `middleware.ts` - Route protection
+- ✅ `proxy.ts` - Route protection
 - ✅ `auth.config.ts` - Authentication config
 - ✅ `auth.ts` - Auth handlers
 - ✅ `.gitignore` - Git ignore rules
@@ -139,7 +139,7 @@
 - Domain-restricted access (6 authorized domains)
 - Role-based permissions (Staff, Editor, Admin)
 - Secure session management (JWT)
-- Protected routes via middleware
+- Protected routes via proxy
 - Server-side permission checks
 
 ### Content Management System
@@ -418,6 +418,6 @@ This project has been built with:
 **Delivered By**: AI Development Assistant  
 **Delivery Date**: September 30, 2025  
 **Project Version**: 1.0.0  
-**Platform**: Vercel (Next.js 15.5.4)  
+**Platform**: Vercel (Next.js)  
 
 **Thank you for choosing this solution for Mike Carney Group!** 🎉
