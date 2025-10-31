@@ -81,6 +81,10 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
           user: process.env.EMAIL_SERVER_USER,
           pass: process.env.EMAIL_SERVER_PASSWORD,
         },
+        secure: false, // Use TLS
+        tls: {
+          rejectUnauthorized: false, // For development/testing only
+        },
       },
       from: process.env.EMAIL_FROM,
       sendVerificationRequest,
