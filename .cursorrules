@@ -1,38 +1,44 @@
 # Mike Carney Wellbeing Hub - Development Rules
 
 ## Project Overview
-This is a Next.js staff wellbeing hub for Mike Carney Group, hosted on Vercel with WCAG 2.2 AA compliance.
+
+This is a Next.js staff wellbeing hub for Mike Carney Group, hosted on Vercel with Australian English, WCAG 2.2 AA compliance, and mobile-first responsive design.
 
 ## Architecture Principles
 
 ### Framework & Routing
+
 - Use Next.js App Router exclusively
 - Server Components by default; Client Components only when needed ('use client')
 - Server Actions for mutations
 - API Routes for third-party integrations only
 
 ### TypeScript
+
 - Strict mode enabled
 - Explicit types for all functions, props, and state
 - No 'any' types - use 'unknown' and type guards instead
 - Use type imports: `import type { ... }`
 
-### Authentication & Authorization
+### Authentication & Authorisation
+
 - NextAuth.js for all authentication
 - Domain-restricted login (see auth.config.ts for allowed domains)
 - Role-based access: 'staff', 'editor', 'admin'
 - Protect routes via proxy.ts
 - Check permissions server-side in pages and API routes
 
-### Database
+### Database ORM
+
 - Vercel Postgres with Drizzle ORM
 - Schema defined in lib/db/schema.ts
 - Use transactions for multi-step operations
-- Always use parameterized queries (Drizzle handles this)
+- Always use parameterised queries (Drizzle handles this)
 
 ## Code Style & Quality
 
 ### Component Structure
+
 ```typescript
 // Server Component (default)
 import { auth } from '@/auth';
@@ -58,27 +64,31 @@ export function Component() {
 ```
 
 ### Naming Conventions
+
 - Components: PascalCase (e.g., `UserMenu.tsx`)
 - Files: kebab-case for utilities (e.g., `file-upload.ts`)
 - Database tables: snake_case (e.g., `user_submissions`)
 - CSS classes: kebab-case (following Tailwind)
 
 ### Styling
+
 - Tailwind CSS for all styling
 - Use semantic class names from globals.css (.btn, .card, .input)
 - Mobile-first responsive design
 - Consistent spacing scale (4, 8, 16, 24, 32, 48, 64px)
 
 ### DRY (Don't Repeat Yourself) Principle
-- Centralize reusable constants, types, and utilities
+
+- Centralise reusable constants, types, and utilities
 - Store shared constants in `lib/constants/` (e.g., categories, validation rules)
 - Extract common logic into reusable utility functions
 - Avoid duplicating form validation, category lists, or configuration across components
 - Use TypeScript `as const` for readonly arrays to maintain type safety
 
 #### Constants Management
+
 ```typescript
-// ✅ Good - centralized constants
+// ✅ Good - centralised constants
 // lib/constants/admin.ts
 export const POLICY_CATEGORIES = [
   'Workplace Health & Safety',
@@ -94,12 +104,14 @@ const POLICY_CATEGORIES = ['Workplace Health & Safety', ...]; // In multiple fil
 ```
 
 #### When to Extract
+
 - Same array/object used in 2+ places
 - Magic numbers or strings repeated (e.g., file size limits, timeouts)
 - Shared validation rules or schemas
 - Common configuration values (e.g., API endpoints, status options)
 
 #### File Organization
+
 - Constants: `lib/constants/[domain].ts` (e.g., `admin.ts`, `validation.ts`)
 - Shared utilities: `lib/utils/[name].ts`
 - Shared types: `lib/types/[domain].ts` or co-located with constants using type exports
@@ -107,6 +119,7 @@ const POLICY_CATEGORIES = ['Workplace Health & Safety', ...]; // In multiple fil
 ## Accessibility (WCAG 2.2 AA)
 
 ### Required Practices
+
 - Semantic HTML5 elements (`<header>`, `<nav>`, `<main>`, `<article>`, etc.)
 - Proper heading hierarchy (h1 → h2 → h3, no skipping)
 - `aria-label` or `aria-labelledby` for all interactive elements without visible labels
@@ -117,6 +130,7 @@ const POLICY_CATEGORIES = ['Workplace Health & Safety', ...]; // In multiple fil
 - Skip to main content link
 
 ### Form Accessibility
+
 ```typescript
 <label htmlFor="email" className="label">
   Email Address
@@ -132,6 +146,7 @@ const POLICY_CATEGORIES = ['Workplace Health & Safety', ...]; // In multiple fil
 ```
 
 ### Button Accessibility
+
 ```typescript
 <button
   type="button"
@@ -145,17 +160,19 @@ const POLICY_CATEGORIES = ['Workplace Health & Safety', ...]; // In multiple fil
 ## Security Best Practices
 
 ### Authentication
+
 - Always verify session server-side
 - Never trust client-side role checks
 - Use proxy for route protection
 - Validate all user inputs
 
 ### Data Access
+
 ```typescript
 // ✅ Good - check permissions
 const session = await auth();
 if (!session || session.user.role !== 'admin') {
-  return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
+  return NextResponse.json({ error: 'Unauthorised' }, { status: 401 });
 }
 
 // ❌ Bad - no permission check
@@ -163,26 +180,30 @@ const data = await db.delete(table)...
 ```
 
 ### File Uploads
+
 - Validate file types and sizes
 - Use Vercel Blob for storage
 - Never serve files from user input paths directly
-- Sanitize filenames
+- Sanitise filenames
 
 ## Performance
 
 ### Images
+
 - Use Next.js `<Image>` component
 - Provide width and height
 - Use `priority` for above-fold images
-- Optimize with Vercel image optimization
+- Optimise with Vercel image optimisation
 
 ### Data Fetching
+
 - Use server components for initial data
 - Implement loading states
 - Use Suspense boundaries where appropriate
 - Cache with `cache: 'force-cache'` for static data
 
-### Database
+### Database Queries
+
 - Add indexes for frequently queried fields
 - Limit result sets (use `.limit()`)
 - Use `.select()` to fetch only needed columns
@@ -191,6 +212,7 @@ const data = await db.delete(table)...
 ## Testing & Validation
 
 ### Before Committing
+
 - Run `npm run lint` and fix all errors
 - Run `npm run build` to check for build errors
 - Test authentication flows
@@ -198,6 +220,7 @@ const data = await db.delete(table)...
 - Check responsive design on mobile and desktop
 
 ### Code Review Checklist
+
 - [ ] TypeScript types are correct
 - [ ] Accessibility requirements met
 - [ ] Proper error handling
@@ -210,6 +233,7 @@ const data = await db.delete(table)...
 ## Error Handling
 
 ### Server Components
+
 ```typescript
 try {
   const data = await fetchData();
@@ -221,6 +245,7 @@ try {
 ```
 
 ### Client Components
+
 ```typescript
 const [error, setError] = useState<string | null>(null);
 
@@ -232,12 +257,13 @@ try {
 ```
 
 ### API Routes
+
 ```typescript
 export async function POST(request: Request) {
   try {
     const session = await auth();
     if (!session) {
-      return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
+      return NextResponse.json({ error: 'Unauthorised' }, { status: 401 });
     }
     
     const body = await request.json();
@@ -259,12 +285,15 @@ export async function POST(request: Request) {
 ## Git Workflow
 
 ### Commit Messages
+
 - Use conventional commits format
 - Format: `type(scope): description`
 - Types: feat, fix, docs, style, refactor, test, chore
 - Example: `feat(auth): add email OTP login`
+- use `git mv ...` to rename files and folders
 
 ### Branch Naming
+
 - feature/feature-name
 - fix/bug-description
 - refactor/component-name
@@ -272,12 +301,14 @@ export async function POST(request: Request) {
 ## Deployment
 
 ### Environment Variables
+
 - Never commit `.env` files
 - Document all required variables in README
 - Use Vercel for production environment variables
 - Different values for development, preview, production
 
 ### Pre-deployment Checks
+
 - [ ] All environment variables configured
 - [ ] Database migrations run
 - [ ] Build succeeds locally
@@ -288,6 +319,7 @@ export async function POST(request: Request) {
 ## Maintenance
 
 ### Regular Tasks
+
 - Update dependencies monthly
 - Review and respond to submissions weekly
 - Monitor error logs
@@ -295,6 +327,7 @@ export async function POST(request: Request) {
 - Review user access permissions
 
 ### Adding New Features
+
 1. Check authentication requirements
 2. Define database schema changes
 3. Create types/interfaces
@@ -308,12 +341,14 @@ export async function POST(request: Request) {
 ## Support & Documentation
 
 ### Code Comments
+
 - Explain "why" not "what"
 - Document complex business logic
 - Add JSDoc for utility functions
 - Keep comments up to date
 
 ### When in Doubt
+
 - Prefer server components
 - Choose accessibility over aesthetics
 - Validate all inputs

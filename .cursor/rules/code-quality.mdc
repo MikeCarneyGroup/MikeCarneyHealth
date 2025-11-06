@@ -1,0 +1,59 @@
+---
+description: Code Quality 
+globs:
+  - "**/*.{js,jsx,ts,tsx}"
+  - "**/*.{mjs,cjs}"
+alwaysApply: true
+---
+
+# Code quality rules
+
+Less code is better. Every line is future debt.
+
+## 0. Key Mindsets
+
+**1** **Simplicity**: Write simple and straightforward code.
+**2** **Readability**: Ensure your code is easy to read and understand.
+**3** **Performance**: Keep performance in mind but do not over-optimise at the cost of readability.
+**4** **Maintainability**: Write code that is easy to maintain and update.
+**5** **Testability**: Ensure your code is easy to test.
+**6** **Reusability**: Write reusable components and functions.
+**7** **Prioritise Modularity, DRY, Performance, and Security**: Ensure code is modular, avoids repetition, performs well, and is secure.
+**8** **Industry Standards**: Adhere to industry best practices and lean towards agile methodologies.
+**9** **Refactoring Suggestions**: Suggest refactorings and code improvements where appropriate.
+**10** **Clarity**: Add comments where the operation isn't clear from the code or where uncommon libraries are used.
+**11** **Linting**: ESLint rules; no `any` unless justified with a comment.
+
+## 1. Code Guidelines
+
+**1** **Utilise Early Returns**: Use early returns to avoid nested conditions and improve readability.
+**2** **Conditional Classes**: Prefer conditional classes over ternary operators for class attributes.
+**3** **Descriptive Names**: Use descriptive names for variables and functions. Prefix event handler functions with "handle" (e.g., handleClick, handleKeyDown).
+**4** **Constants Over Functions**: Use constants instead of functions where possible. Define types if applicable.
+**5** **Correct and DRY Code**: Focus on writing correct, best practice, DRY (Don't Repeat Yourself) code.
+**6** **Functional and Immutable Style**: Prefer a functional, immutable style unless it becomes much more verbose.
+**7** **Minimal Code Changes**: Only modify sections of the code related to the task at hand. Avoid modifying unrelated pieces of code. Accomplish goals with minimal code changes.
+**8** **Async/await**: Preference over promises.
+**9** **Linting Workflow**: Always run `npm run lint` after making code changes and before completing a task. If linting errors are found, run `npm run lint:fix` to automatically fix issues where possible, then manually fix any remaining errors. Always run `npm run build` after making code changes and before completing a task. Code should pass ESLint with zero errors and build successfully before completion.
+
+## 2. Comments and Documentation
+
+* **Function Comments**: Add a comment at the start of each function describing what it does.
+* **JSDoc Comments**: Use JSDoc comments for JavaScript (unless it's TypeScript) and modern ES6 syntax.
+
+## 3. Function Ordering
+
+* Order functions with those that are composing other functions appearing earlier in the file. For example, if you have a menu with multiple buttons, define the menu function above the buttons.
+
+## 4. Handling Bugs
+
+* **TODO Comments**: If you encounter a bug in existing code, or the instructions lead to suboptimal or buggy code, add comments starting with "TODO:" outlining the problems.
+
+## 5. Error Handling
+
+* **Try/Catch Blocks**: Use try/catch blocks for error handling in async operations and where errors are expected. Always handle errors appropriately rather than silently swallowing them.
+* **Error Messages**: Provide clear, actionable error messages that help with debugging. Include relevant context (e.g., function name, input parameters) when appropriate.
+* **Error Propagation**: Allow errors to propagate to callers when appropriate, rather than catching and ignoring them. Only catch errors that you can meaningfully handle.
+* **Async Error Handling**: Use try/catch with async/await for async operations. For promise chains, use `.catch()` appropriately.
+* **Error Boundaries**: In React/UI contexts, implement error boundaries to catch and handle component errors gracefully.
+* **Validation**: Validate inputs early and throw descriptive errors for invalid inputs rather than failing silently later.

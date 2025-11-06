@@ -22,7 +22,7 @@ export default function CareersPage() {
           <div className="text-center mb-12">
             <h2 className="text-3xl font-bold mb-4">Why Work With Us</h2>
             <p className="text-lg text-gray-600 max-w-2xl mx-auto">
-              We&apos;re more than just a workplace—we&apos;re a community dedicated to excellence, growth, and wellbeing.
+              We&apos;re more than just a workplace - we&apos;re a community dedicated to excellence, growth, and wellbeing.
             </p>
           </div>
 
