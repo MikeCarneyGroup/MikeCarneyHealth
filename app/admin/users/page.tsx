@@ -4,6 +4,7 @@ import { db } from '@/lib/db';
 import { users } from '@/lib/db/schema';
 import { desc } from 'drizzle-orm';
 import { UserRoleManager } from '@/components/admin/UserRoleManager';
+import { getDisplayNameFromEmail } from '@/lib/utils/user-name';
 
 export const metadata = {
   title: 'Manage Users - Admin',
@@ -35,7 +36,7 @@ export default async function AdminUsersPage() {
             <article key={user.id} className="card">
               <div className="flex items-start justify-between gap-4">
                 <div className="flex-1">
-                  <h3 className="font-semibold">{user.name || 'No name'}</h3>
+                  <h3 className="font-semibold">{user.name || getDisplayNameFromEmail(user.email)}</h3>
                   <p className="text-sm text-gray-600">{user.email}</p>
                   <div className="flex items-center gap-2 mt-2">
                     <span className={`text-xs px-2 py-1 rounded ${
