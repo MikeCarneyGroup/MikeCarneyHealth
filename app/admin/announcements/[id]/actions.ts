@@ -4,7 +4,8 @@ import { auth } from '@/auth';
 import { db } from '@/lib/db';
 import { announcements } from '@/lib/db/schema';
 import { eq } from 'drizzle-orm';
-import { revalidatePath } from 'next/cache';
+import { revalidatePath, revalidateTag } from 'next/cache';
+import { CACHE_TAG_ANNOUNCEMENTS } from '@/app/page';
 
 interface UpdateAnnouncementData {
   id: string;
@@ -48,6 +49,7 @@ export async function updateAnnouncement(data: UpdateAnnouncementData) {
     revalidatePath('/admin/announcements');
     revalidatePath('/dashboard');
     revalidatePath('/');
+    revalidateTag(CACHE_TAG_ANNOUNCEMENTS);
 
     return { success: true };
   } catch (error) {
@@ -70,6 +72,7 @@ export async function deleteAnnouncement(id: string) {
     revalidatePath('/admin/announcements');
     revalidatePath('/dashboard');
     revalidatePath('/');
+    revalidateTag(CACHE_TAG_ANNOUNCEMENTS);
 
     return { success: true };
   } catch (error) {

@@ -3,7 +3,8 @@
 import { auth } from '@/auth';
 import { db } from '@/lib/db';
 import { announcements } from '@/lib/db/schema';
-import { revalidatePath } from 'next/cache';
+import { revalidatePath, revalidateTag } from 'next/cache';
+import { CACHE_TAG_ANNOUNCEMENTS } from '@/app/page';
 
 interface CreateAnnouncementData {
   title: string;
@@ -39,6 +40,7 @@ export async function createAnnouncement(data: CreateAnnouncementData) {
     revalidatePath('/dashboard');
     if (data.isPublic) {
       revalidatePath('/');
+      revalidateTag(CACHE_TAG_ANNOUNCEMENTS);
     }
 
     return { success: true };

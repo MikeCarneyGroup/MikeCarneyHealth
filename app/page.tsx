@@ -4,17 +4,49 @@ import { db } from '@/lib/db';
 import { announcements } from '@/lib/db/schema';
 import { desc, eq } from 'drizzle-orm';
 import { ArrowRight, Calendar, FileText, Heart, Users } from 'lucide-react';
+import { unstable_cache } from 'next/cache';
+
+// Cache tag for announcements - used for on-demand revalidation
+export const CACHE_TAG_ANNOUNCEMENTS = 'announcements';
+
+// Static generation configuration
+// Use 'auto' to allow static generation while supporting dynamic features like auth
+export const dynamic = 'auto';
+export const revalidate = 3600; // Revalidate every hour (ISR)
+
+// Cached function to fetch public announcements
+async function getPublicAnnouncements() {
+  try {
+    const result = await db
+      .select()
+      .from(announcements)
+      .where(eq(announcements.isPublic, true))
+      .orderBy(desc(announcements.createdAt))
+      .limit(3);
+    
+    return result;
+  } catch (error) {
+    // Log error but don't crash
+    console.error('Failed to fetch announcements:', error);
+    return [];
+  }
+}
+
+// Cache the announcements with a tag for on-demand revalidation
+const getCachedAnnouncements = unstable_cache(
+  async () => getPublicAnnouncements(),
+  ['public-announcements'],
+  {
+    tags: [CACHE_TAG_ANNOUNCEMENTS],
+    revalidate: 3600, // Revalidate every hour
+  }
+);
 
 export default async function HomePage() {
   const session = await auth();
   
-  // Fetch public announcements
-  const publicAnnouncements = await db
-    .select()
-    .from(announcements)
-    .where(eq(announcements.isPublic, true))
-    .orderBy(desc(announcements.createdAt))
-    .limit(3);
+  // Fetch cached public announcements
+  const publicAnnouncements = await getCachedAnnouncements();
 
   return (
     <div>
