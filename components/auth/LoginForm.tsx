@@ -69,7 +69,7 @@ export function LoginForm() {
   return (
     <div className="card">
       {error && (
-        <div className="mb-4 p-3 rounded bg-red-50 border border-red-200 text-red-800 text-sm" role="alert">
+        <div className="mb-4 p-3 rounded-sm bg-red-50 border border-red-200 text-red-800 text-sm" role="alert">
           {error === 'AccessDenied' && 'Access denied. Please use an authorized company email.'}
           {error === 'Configuration' && 'There is a problem with the server configuration.'}
           {error === 'Verification' && 'The sign-in link is invalid or has expired.'}

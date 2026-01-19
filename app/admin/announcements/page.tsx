@@ -41,12 +41,12 @@ export default async function AdminAnnouncementsPage() {
                   <div className="flex items-center gap-2 mb-2">
                     <h3 className="font-semibold">{announcement.title}</h3>
                     {announcement.isPublic && (
-                      <span className="text-xs px-2 py-1 rounded bg-blue-100 text-blue-800">
+                      <span className="text-xs px-2 py-1 rounded-sm bg-blue-100 text-blue-800">
                         Public
                       </span>
                     )}
                     {!announcement.published && (
-                      <span className="text-xs px-2 py-1 rounded bg-gray-100 text-gray-800">
+                      <span className="text-xs px-2 py-1 rounded-sm bg-gray-100 text-gray-800">
                         Draft
                       </span>
                     )}

@@ -19,7 +19,7 @@ export default async function HomePage() {
   return (
     <div>
       {/* Hero Section */}
-      <section className="bg-gradient-to-br from-primary-600 to-primary-800 text-white py-16 md:py-24">
+      <section className="bg-linear-to-br from-primary-600 to-primary-800 text-white py-16 md:py-24">
         <div className="container-custom">
           <h1 className="text-4xl md:text-5xl font-bold mb-6">
             Welcome to Mike Carney Wellbeing Hub

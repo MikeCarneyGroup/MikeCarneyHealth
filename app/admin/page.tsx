@@ -76,13 +76,13 @@ export default async function AdminOverviewPage() {
         <div className="card">
           <h2 className="text-lg font-semibold mb-4">Quick Actions</h2>
           <div className="space-y-2">
-            <Link href="/admin/announcements/new" className="block px-4 py-2 rounded bg-primary-50 hover:bg-primary-100 text-primary-900 transition-colors">
+            <Link href="/admin/announcements/new" className="block px-4 py-2 rounded-sm bg-primary-50 hover:bg-primary-100 text-primary-900 transition-colors">
               Create Announcement
             </Link>
-            <Link href="/admin/news/new" className="block px-4 py-2 rounded bg-primary-50 hover:bg-primary-100 text-primary-900 transition-colors">
+            <Link href="/admin/news/new" className="block px-4 py-2 rounded-sm bg-primary-50 hover:bg-primary-100 text-primary-900 transition-colors">
               Create News Article
             </Link>
-            <Link href="/admin/events/new" className="block px-4 py-2 rounded bg-primary-50 hover:bg-primary-100 text-primary-900 transition-colors">
+            <Link href="/admin/events/new" className="block px-4 py-2 rounded-sm bg-primary-50 hover:bg-primary-100 text-primary-900 transition-colors">
               Create Event
             </Link>
           </div>

@@ -12,13 +12,13 @@ export async function Header() {
     <header className="sticky top-0 z-40 w-full border-b bg-white">
       <div className="container-custom flex h-16 items-center justify-between">
         <div className="flex items-center gap-6">
-          <Link href="/" className="flex items-center gap-2 focus:outline-none focus-visible:ring-2 focus-visible:ring-primary-600 rounded">
+          <Link href="/" className="flex items-center gap-2 focus:outline-hidden focus-visible:ring-2 focus-visible:ring-primary-600 rounded-sm">
             <Image
               src="/MCG-Logo-white.png"
               alt="Mike Carney Group"
               width={180}
               height={40}
-              className="h-10 w-auto bg-gray-900 px-3 py-1 rounded"
+              className="h-10 w-auto bg-gray-900 px-3 py-1 rounded-sm"
               priority
             />
           </Link>

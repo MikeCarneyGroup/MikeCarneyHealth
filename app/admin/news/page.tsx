@@ -41,7 +41,7 @@ export default async function AdminNewsPage() {
                   <div className="flex items-center gap-2 mb-2">
                     <h3 className="font-semibold">{article.title}</h3>
                     {!article.published && (
-                      <span className="text-xs px-2 py-1 rounded bg-gray-100 text-gray-800">
+                      <span className="text-xs px-2 py-1 rounded-sm bg-gray-100 text-gray-800">
                         Draft
                       </span>
                     )}

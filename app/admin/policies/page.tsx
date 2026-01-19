@@ -40,11 +40,11 @@ export default async function AdminPoliciesPage() {
                 <div className="flex-1">
                   <div className="flex items-center gap-2 mb-2">
                     <h3 className="font-semibold">{policy.title}</h3>
-                    <span className="text-xs px-2 py-1 rounded bg-gray-100 text-gray-800">
+                    <span className="text-xs px-2 py-1 rounded-sm bg-gray-100 text-gray-800">
                       {policy.category}
                     </span>
                     {!policy.published && (
-                      <span className="text-xs px-2 py-1 rounded bg-yellow-100 text-yellow-800">
+                      <span className="text-xs px-2 py-1 rounded-sm bg-yellow-100 text-yellow-800">
                         Draft
                       </span>
                     )}

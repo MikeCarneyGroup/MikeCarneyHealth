@@ -76,7 +76,7 @@ export default async function SubmissionsPage() {
                       }`}>
                         {submission.status}
                       </span>
-                      <span className="text-xs px-2 py-1 rounded bg-gray-100 text-gray-800 capitalize">
+                      <span className="text-xs px-2 py-1 rounded-sm bg-gray-100 text-gray-800 capitalize">
                         {submission.type}
                       </span>
                     </div>

@@ -43,7 +43,7 @@ export default async function AdminLayout({
       <div className="container-custom">
         <div className="flex gap-8">
           {/* Sidebar */}
-          <aside className="w-64 flex-shrink-0">
+          <aside className="w-64 shrink-0">
             <div className="sticky top-24">
               <h2 className="text-sm font-semibold text-gray-500 uppercase mb-4">
                 Admin Panel

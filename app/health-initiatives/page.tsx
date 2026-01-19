@@ -8,7 +8,7 @@ export const metadata = {
 export default function HealthInitiativesPage() {
   return (
     <div>
-      <section className="bg-gradient-to-br from-primary-600 to-primary-800 text-white py-16">
+      <section className="bg-linear-to-br from-primary-600 to-primary-800 text-white py-16">
         <div className="container-custom">
           <h1 className="text-4xl md:text-5xl font-bold mb-4">Health Initiatives</h1>
           <p className="text-xl opacity-90 max-w-3xl">
@@ -108,7 +108,7 @@ function InitiativeCard({
         {features.map((feature, index) => (
           <li key={index} className="flex items-start gap-2">
             <svg
-              className="h-5 w-5 text-primary-600 mt-0.5 flex-shrink-0"
+              className="h-5 w-5 text-primary-600 mt-0.5 shrink-0"
               fill="none"
               viewBox="0 0 24 24"
               stroke="currentColor"

@@ -123,7 +123,7 @@ export function EventEditForm({ event }: EventEditFormProps) {
         {error && (
           <div
             role="alert"
-            className="px-4 py-3 rounded bg-red-50 border border-red-200 text-red-800"
+            className="px-4 py-3 rounded-sm bg-red-50 border border-red-200 text-red-800"
           >
             {error}
           </div>
@@ -270,7 +270,7 @@ export function EventEditForm({ event }: EventEditFormProps) {
             id="published"
             type="checkbox"
             {...register('published')}
-            className="mt-1 h-4 w-4 rounded border-gray-300 text-primary-600 focus:ring-primary-500"
+            className="mt-1 h-4 w-4 rounded-sm border-gray-300 text-primary-600 focus:ring-primary-500"
           />
           <div>
             <label htmlFor="published" className="font-medium cursor-pointer">

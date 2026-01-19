@@ -37,7 +37,7 @@ export default async function AdminSubmissionsPage() {
                   <div>
                     <div className="flex items-center gap-2 mb-2">
                       <h3 className="font-semibold">{submission.title}</h3>
-                      <span className="text-xs px-2 py-1 rounded bg-gray-100 text-gray-800 capitalize">
+                      <span className="text-xs px-2 py-1 rounded-sm bg-gray-100 text-gray-800 capitalize">
                         {submission.type}
                       </span>
                     </div>
@@ -74,7 +74,7 @@ export default async function AdminSubmissionsPage() {
                       >
                         {submission.status}
                       </span>
-                      <span className="text-xs px-2 py-1 rounded bg-gray-100 text-gray-800 capitalize">
+                      <span className="text-xs px-2 py-1 rounded-sm bg-gray-100 text-gray-800 capitalize">
                         {submission.type}
                       </span>
                     </div>
