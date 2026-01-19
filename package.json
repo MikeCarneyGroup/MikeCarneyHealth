@@ -8,7 +8,14 @@
     "start": "next start",
     "lint": "eslint .",
     "db:push": "dotenv -e .env.local -- drizzle-kit push",
-    "db:studio": "dotenv -e .env.local -- drizzle-kit studio"
+    "db:studio": "dotenv -e .env.local -- drizzle-kit studio",
+    "seed:test": "npx tsx lib/db/seed-test-data.ts",
+    "test:cleanup": "npx tsx scripts/cleanup-test-data.ts",
+    "test:branch:create": "npx tsx scripts/setup-test-branch.ts",
+    "test:branch:delete": "npx tsx scripts/delete-test-branch.ts",
+    "db:migrate:verification": "npx tsx scripts/migrate-verification-table.ts",
+    "db:migrate:sessions": "npx tsx scripts/migrate-sessions-table.ts",
+    "db:migrate:sessions:optional": "npx tsx scripts/migrate-sessions-add-optional-fields.ts"
   },
   "dependencies": {
     "@auth/core": "^0.41.1",
@@ -23,6 +30,7 @@
     "@vercel/postgres": "^0.10.0",
     "@vercel/speed-insights": "^1.3.1",
     "bcryptjs": "^2.4.3",
+    "better-auth": "^1.4.15",
     "date-fns": "^4.1.0",
     "drizzle-orm": "^0.45.1",
     "form-data": "^4.0.4",
@@ -45,12 +53,14 @@
     "@types/nodemailer": "^6.4.16",
     "@types/react": "19.2.8",
     "@types/react-dom": "19.2.3",
+    "dotenv": "^17.2.3",
     "dotenv-cli": "^7.4.2",
     "drizzle-kit": "^0.31.8",
     "eslint": "^9",
     "eslint-config-next": "16.1.3",
     "postcss": "^8",
     "tailwindcss": "^4.1.18",
+    "tsx": "^4.21.0",
     "typescript": "^5"
   },
   "overrides": {

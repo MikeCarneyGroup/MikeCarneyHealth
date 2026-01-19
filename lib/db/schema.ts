@@ -34,21 +34,30 @@ export const accounts = pgTable('accounts', {
 });
 
 // Sessions table
+// Better Auth requires createdAt, updatedAt, and optionally ipAddress/userAgent fields
+// Property names must match column names for Better Auth Drizzle adapter
 export const sessions = pgTable('sessions', {
   id: text('id').primaryKey().$defaultFn(() => createId()),
   sessionToken: text('sessionToken').notNull().unique(),
   userId: text('userId').notNull().references(() => users.id, { onDelete: 'cascade' }),
   expires: timestamp('expires', { mode: 'date' }).notNull(),
+  created_at: timestamp('created_at', { mode: 'date' }).defaultNow().notNull(),
+  updated_at: timestamp('updated_at', { mode: 'date' }).defaultNow().notNull(),
+  ip_address: text('ip_address'), // Optional: IP address of the client (property name matches column)
+  user_agent: text('user_agent'), // Optional: Browser/client information (property name matches column)
 });
 
 // Verification tokens (for email OTP)
+// Updated to match Better Auth requirements
+// Better Auth Drizzle adapter expects property names to match column names for verification table
 export const verificationTokens = pgTable('verification_tokens', {
+  id: text('id').primaryKey().$defaultFn(() => createId()),
   identifier: text('identifier').notNull(),
-  token: text('token').notNull(),
-  expires: timestamp('expires', { mode: 'date' }).notNull(),
-}, (table) => ({
-  compoundKey: primaryKey({ columns: [table.identifier, table.token] }),
-}));
+  value: text('value').notNull(), // Better Auth uses 'value' instead of 'token'
+  expires_at: timestamp('expires_at', { mode: 'date' }).notNull(), // Property name must match column name for Better Auth
+  created_at: timestamp('created_at', { mode: 'date' }).defaultNow().notNull(),
+  updated_at: timestamp('updated_at', { mode: 'date' }).defaultNow().notNull(),
+});
 
 // Announcements
 export const announcements = pgTable('announcements', {

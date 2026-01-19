@@ -1,16 +1,23 @@
 'use client';
 
 import { useState } from 'react';
-import { signIn } from 'next-auth/react';
-import { useSearchParams } from 'next/navigation';
+import { useSearchParams, useRouter } from 'next/navigation';
 import { Mail } from 'lucide-react';
+import { authClient } from '@/lib/auth/client';
 
 export function LoginForm() {
   const [email, setEmail] = useState('');
   const [isLoading, setIsLoading] = useState(false);
   const [emailSent, setEmailSent] = useState(false);
+  const [error, setError] = useState<string | null>(null);
   const searchParams = useSearchParams();
-  const error = searchParams.get('error');
+  const router = useRouter();
+  
+  // Check for error in URL params
+  const urlError = searchParams.get('error');
+  if (urlError && !error) {
+    setError(urlError);
+  }
 
   const allowedDomains = [
     'lexusoftownsville.com.au',
@@ -25,25 +32,31 @@ export function LoginForm() {
   const handleEmailLogin = async (e: React.FormEvent) => {
     e.preventDefault();
     setIsLoading(true);
+    setError(null);
 
     // Validate email domain
     const domain = email.split('@')[1]?.toLowerCase();
     if (!domain || !allowedDomains.includes(domain)) {
-      alert('Please use an authorized company email address.');
+      setError('Please use an authorized company email address.');
       setIsLoading(false);
       return;
     }
 
-    const result = await signIn('email', { 
-      email, 
-      callbackUrl: '/dashboard',
-      redirect: false 
-    });
-    
-    if (result?.ok) {
-      setEmailSent(true);
-    } else if (result?.error) {
-      alert('Failed to send email. Please try again.');
+    try {
+      const { data, error: err } = await authClient.signIn.magicLink({
+        email,
+        callbackURL: '/dashboard',
+        errorCallbackURL: '/login?error=Verification',
+      });
+
+      if (err) {
+        setError(err.message || 'Failed to send email. Please try again.');
+      } else {
+        setEmailSent(true);
+      }
+    } catch (err) {
+      setError('Failed to send email. Please try again.');
+      console.error('Magic link error:', err);
     }
     
     setIsLoading(false);
@@ -70,10 +83,13 @@ export function LoginForm() {
     <div className="card">
       {error && (
         <div className="mb-4 p-3 rounded-sm bg-red-50 border border-red-200 text-red-800 text-sm" role="alert">
-          {error === 'AccessDenied' && 'Access denied. Please use an authorized company email.'}
-          {error === 'Configuration' && 'There is a problem with the server configuration.'}
-          {error === 'Verification' && 'The sign-in link is invalid or has expired.'}
-          {!['AccessDenied', 'Configuration', 'Verification'].includes(error) && 'An error occurred. Please try again.'}
+          {error.includes('Access denied') || error.includes('authorized') 
+            ? 'Access denied. Please use an authorized company email.'
+            : error.includes('Verification') || error.includes('expired')
+            ? 'The sign-in link is invalid or has expired.'
+            : error.includes('Configuration')
+            ? 'There is a problem with the server configuration.'
+            : error}
         </div>
       )}
 

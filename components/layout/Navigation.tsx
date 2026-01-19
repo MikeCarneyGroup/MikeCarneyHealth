@@ -2,9 +2,19 @@
 
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
-import { Session } from 'next-auth';
 import { Menu, X } from 'lucide-react';
 import { useState } from 'react';
+
+interface Session {
+  user: {
+    id: string;
+    role: 'staff' | 'editor' | 'admin';
+    email: string;
+    name?: string | null;
+    image?: string | null;
+  };
+  expires: string;
+}
 
 interface NavigationProps {
   session: Session | null;

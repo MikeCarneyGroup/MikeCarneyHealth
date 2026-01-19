@@ -1,6 +1,10 @@
-import { handlers } from '@/auth';
+import { auth } from '@/lib/auth/better-auth';
+import { toNextJsHandler } from 'better-auth/next-js';
 
-export const { GET, POST } = handlers;
+// Better Auth handler for Next.js
+const handler = toNextJsHandler(auth);
+
+export const { GET, POST } = handler;
 
 // Handle HEAD requests from email protection services (e.g., Outlook SafeLinks)
 // HEAD requests should return the same headers as GET but without a body
