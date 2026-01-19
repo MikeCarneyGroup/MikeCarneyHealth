@@ -40,7 +40,7 @@ export async function createAnnouncement(data: CreateAnnouncementData) {
     revalidatePath('/dashboard');
     if (data.isPublic) {
       revalidatePath('/');
-      revalidateTag(CACHE_TAG_ANNOUNCEMENTS);
+      revalidateTag(CACHE_TAG_ANNOUNCEMENTS, 'max');
     }
 
     return { success: true };

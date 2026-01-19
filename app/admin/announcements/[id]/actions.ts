@@ -49,7 +49,7 @@ export async function updateAnnouncement(data: UpdateAnnouncementData) {
     revalidatePath('/admin/announcements');
     revalidatePath('/dashboard');
     revalidatePath('/');
-    revalidateTag(CACHE_TAG_ANNOUNCEMENTS);
+    revalidateTag(CACHE_TAG_ANNOUNCEMENTS, 'max');
 
     return { success: true };
   } catch (error) {
@@ -72,7 +72,7 @@ export async function deleteAnnouncement(id: string) {
     revalidatePath('/admin/announcements');
     revalidatePath('/dashboard');
     revalidatePath('/');
-    revalidateTag(CACHE_TAG_ANNOUNCEMENTS);
+    revalidateTag(CACHE_TAG_ANNOUNCEMENTS, 'max');
 
     return { success: true };
   } catch (error) {

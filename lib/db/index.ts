@@ -19,7 +19,7 @@ const pool = new Pool({
 });
 
 // Handle connection errors gracefully (Neon auto-pause can cause temporary connection issues)
-pool.on('error', (err) => {
+pool.on('error', (err: Error) => {
   console.error('Unexpected Neon database pool error:', err);
 });
 
