@@ -34,8 +34,18 @@ export function LoginForm() {
       return;
     }
 
-    await signIn('email', { email, callbackUrl: '/dashboard' });
-    setEmailSent(true);
+    const result = await signIn('email', { 
+      email, 
+      callbackUrl: '/dashboard',
+      redirect: false 
+    });
+    
+    if (result?.ok) {
+      setEmailSent(true);
+    } else if (result?.error) {
+      alert('Failed to send email. Please try again.');
+    }
+    
     setIsLoading(false);
   };
 
