@@ -15,6 +15,9 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
     verificationTokensTable: verificationTokens,
   }),
   session: { strategy: 'jwt' },
+  // Explicitly set AUTH_URL for production (NextAuth v5 uses AUTH_URL instead of NEXTAUTH_URL)
+  // This ensures verification callbacks work correctly
+  trustHost: true, // Trust host from headers (works with AUTH_TRUST_HOST env var)
   callbacks: {
     async authorized({ auth, request }) {
       return authConfig.callbacks!.authorized!({ auth, request });
