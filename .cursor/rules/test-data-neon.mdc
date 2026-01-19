@@ -1,0 +1,293 @@
+---
+description: Guidelines for using test data with Neon database in development and testing environments
+globs:
+  - "**/*.{ts,tsx,js,jsx}"
+  - "**/seed*.{ts,js}"
+  - "**/*test*.{ts,tsx,js,jsx}"
+  - "**/*spec*.{ts,tsx,js,jsx}"
+alwaysApply: true
+---
+
+# Test Data Management with Neon Database
+
+## Overview
+
+This project uses Neon Postgres for database management. When working with test data, follow these guidelines to ensure proper isolation, consistency, and safety.
+
+## Environment Configuration
+
+### Database Connection Strings
+
+- **Production**: Use `POSTGRES_URL` from Vercel environment variables
+- **Development/Testing**: Use `POSTGRES_URL` from `.env.local` (should point to a Neon test branch)
+- **Local Testing**: **Always use Neon branches** for isolated test environments (recommended approach)
+
+### Quick Setup: Create Test Branch
+
+The easiest way to set up a test database:
+
+1. **Get Neon API Key**: https://console.neon.tech/app/settings/api-keys
+2. **Add to .env.local**: `NEON_API_KEY="your-key-here"`
+3. **Run setup script**: `npm run test:branch:create`
+
+This automatically:
+- Creates a `test-sandbox` branch with full production data copy
+- Updates `.env.local` to use the test branch
+- Keeps production database completely safe
+
+### Environment Variables
+
+```bash
+# .env.local (for local development with test data)
+NEON_API_KEY="your-neon-api-key"  # Required for branch management
+POSTGRES_URL="postgresql://user:password@host.neon.tech/test-db?sslmode=require"  # Auto-updated by setup script
+
+# Optional: Custom branch name
+BRANCH_NAME="my-test-branch"  # Defaults to "test-sandbox"
+```
+
+## Test Data Best Practices
+
+### 1. Data Seeding
+
+- **Seed Scripts**: Create seed scripts in `lib/db/seed.ts` or `scripts/seed-test-data.ts`
+- **Idempotent Seeds**: Ensure seed scripts can be run multiple times without creating duplicates
+- **Cleanup**: Always clean up test data after tests complete
+- **Isolation**: Use database transactions or separate test branches for test isolation
+
+### 2. Test Data Structure
+
+```typescript
+// Example: lib/db/seed-test-data.ts
+import { db } from '@/lib/db';
+import { users, announcements, news } from '@/lib/db/schema';
+
+export async function seedTestData() {
+  // Use transactions for atomic operations
+  await db.transaction(async (tx) => {
+    // Insert test users
+    await tx.insert(users).values([
+      {
+        id: 'test-user-1',
+        email: 'test1@mikecarneytoyota.com.au',
+        name: 'Test User 1',
+        role: 'staff',
+      },
+      {
+        id: 'test-admin-1',
+        email: 'admin@mikecarneytoyota.com.au',
+        name: 'Test Admin',
+        role: 'admin',
+      },
+    ]);
+
+    // Insert test announcements
+    await tx.insert(announcements).values([
+      {
+        id: 'test-announcement-1',
+        title: 'Test Announcement',
+        content: 'This is a test announcement',
+        authorId: 'test-user-1',
+        isPublic: true,
+        published: true,
+      },
+    ]);
+  });
+}
+```
+
+### 3. Using Neon Branches for Testing
+
+- **Create Test Branches**: Use Neon's branching feature to create isolated test environments
+- **Branch Naming**: Use descriptive names like `test-auth-migration` or `test-feature-x`
+- **Cleanup**: Delete test branches after testing is complete
+- **Connection**: Update `POSTGRES_URL` to point to the test branch connection string
+
+```bash
+# Example: Using a Neon branch for testing
+POSTGRES_URL="postgresql://user:password@ep-test-branch-xyz.neon.tech/test-db?sslmode=require"
+```
+
+### 4. Test Data Guidelines
+
+#### DO:
+- ✅ Use realistic but clearly identifiable test data (e.g., emails like `test-user-1@mikecarneytoyota.com.au`)
+- ✅ Use transactions for test data setup/teardown
+- ✅ Clean up test data after each test suite
+- ✅ Use unique identifiers (CUID2) for test records
+- ✅ Test with different user roles (staff, editor, admin)
+- ✅ Test with both published and unpublished content
+- ✅ Use descriptive test data that explains its purpose
+
+#### DON'T:
+- ❌ Use production data for testing
+- ❌ Leave test data in production databases
+- ❌ Hard-code production user IDs or emails in tests
+- ❌ Create test data that could be mistaken for real data
+- ❌ Run tests against production database
+- ❌ Commit test data to production seed files
+
+### 5. Test Data Utilities
+
+Create reusable utilities for common test scenarios:
+
+```typescript
+// lib/test-utils/db-helpers.ts
+import { db } from '@/lib/db';
+import { users } from '@/lib/db/schema';
+import { createId } from '@paralleldrive/cuid2';
+
+export async function createTestUser(overrides?: Partial<typeof users.$inferInsert>) {
+  const testUser = {
+    id: createId(),
+    email: `test-${createId()}@mikecarneytoyota.com.au`,
+    name: 'Test User',
+    role: 'staff' as const,
+    ...overrides,
+  };
+  
+  await db.insert(users).values(testUser);
+  return testUser;
+}
+
+export async function cleanupTestData() {
+  // Delete test data (be careful with this in production!)
+  await db.delete(users).where(sql`email LIKE 'test-%@%'`);
+}
+```
+
+### 6. Database Migrations for Test Data
+
+- **Separate Migrations**: Keep test data migrations separate from schema migrations
+- **Conditional Seeds**: Only run seed scripts in development/test environments
+- **Environment Checks**: Always check environment before seeding:
+
+```typescript
+if (process.env.NODE_ENV === 'production') {
+  throw new Error('Cannot seed test data in production');
+}
+```
+
+### 7. Testing Authentication with Test Data
+
+When testing authentication flows:
+
+- Use test email addresses from allowed domains
+- Create test users with known credentials (for magic link testing)
+- Test role-based access with different user roles
+- Clean up test sessions and verification tokens after tests
+
+```typescript
+// Example: Test authentication setup
+const testUser = await createTestUser({
+  email: 'test-auth@mikecarneytoyota.com.au',
+  role: 'admin',
+});
+
+// Test magic link flow
+// ... test code ...
+
+// Cleanup
+await db.delete(users).where(eq(users.id, testUser.id));
+```
+
+## Neon-Specific Considerations
+
+### 1. Auto-Pause Handling
+
+- Neon databases auto-pause after inactivity
+- Test scripts should handle connection retries
+- Use connection pooling for test suites
+- Consider keeping test branches active during development
+
+### 2. HTTP Adapter for Testing
+
+- Use Neon HTTP adapter (already configured) for serverless compatibility
+- Test database operations work correctly with HTTP adapter
+- Verify connection handling in test environments
+
+### 3. Branch Management
+
+- Create branches for feature testing: `neon branches create test-feature-name`
+- Use branch connection strings in test environment variables
+- Delete branches after testing: `neon branches delete test-feature-name`
+
+## Scripts and Commands
+
+### Seed Test Data
+
+```bash
+# Run seed script
+npm run seed:test
+
+# Or with dotenv
+dotenv -e .env.local -- tsx scripts/seed-test-data.ts
+```
+
+### Clean Test Data
+
+```bash
+# Clean up test data
+npm run test:cleanup
+
+# Or manually via Drizzle Studio
+npm run db:studio
+```
+
+## Integration with CI/CD
+
+- Use separate Neon branches for CI/CD testing
+- Never run tests against production database
+- Clean up test branches after CI/CD runs
+- Use environment-specific connection strings in CI/CD
+
+## Safety Checklist
+
+Before running any test data operations:
+
+- [ ] Verify you're not connected to production database
+- [ ] Check `NODE_ENV` is not 'production'
+- [ ] Confirm database connection string points to test environment
+- [ ] Ensure test data is clearly identifiable (e.g., prefixed with 'test-')
+- [ ] Have a cleanup plan for test data
+- [ ] Use transactions for atomic test operations
+- [ ] Verify test isolation (one test doesn't affect another)
+
+## Example: Complete Test Setup
+
+```typescript
+// tests/setup.ts
+import { db } from '@/lib/db';
+import { seedTestData, cleanupTestData } from '@/lib/test-utils';
+
+beforeAll(async () => {
+  // Verify we're in test environment
+  if (process.env.NODE_ENV === 'production') {
+    throw new Error('Tests cannot run in production');
+  }
+  
+  // Seed test data
+  await seedTestData();
+});
+
+afterAll(async () => {
+  // Clean up test data
+  await cleanupTestData();
+});
+
+beforeEach(async () => {
+  // Optional: Reset specific test data between tests
+});
+
+afterEach(async () => {
+  // Optional: Clean up after each test
+});
+```
+
+## Notes
+
+- Always use transactions when possible for test data operations
+- Test data should be clearly distinguishable from production data
+- Never commit test data to production seed files
+- Use Neon branches for isolated test environments when possible
+- Keep test data minimal but representative of real scenarios
