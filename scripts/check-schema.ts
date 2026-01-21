@@ -1,4 +1,17 @@
-import { sql } from '@vercel/postgres';
+import { config } from 'dotenv';
+import { neon } from '@neondatabase/serverless';
+import { resolve } from 'path';
+
+// Load .env.local file
+config({ path: resolve(process.cwd(), '.env.local') });
+
+const POSTGRES_URL = process.env.POSTGRES_URL;
+if (!POSTGRES_URL) {
+  console.error('❌ POSTGRES_URL is not set in environment variables');
+  process.exit(1);
+}
+
+const sql = neon(POSTGRES_URL);
 
 async function checkSchema() {
   console.log('Checking verification_tokens table structure...\n');
@@ -17,7 +30,7 @@ async function checkSchema() {
     `;
     
     console.log('Table columns:');
-    result.rows.forEach((row) => {
+    result.forEach((row: any) => {
       console.log(`  - ${row.column_name}: ${row.data_type} (nullable: ${row.is_nullable})`);
     });
     
@@ -31,7 +44,7 @@ async function checkSchema() {
     `;
     
     console.log('\nTable constraints:');
-    constraints.rows.forEach((row) => {
+    constraints.forEach((row: any) => {
       console.log(`  - ${row.constraint_name}: ${row.constraint_type}`);
     });
     
@@ -46,10 +59,10 @@ async function checkSchema() {
     `;
     
     console.log('\nPrimary key columns:');
-    if (primaryKey.rows.length === 0) {
+    if (primaryKey.length === 0) {
       console.log('  ❌ NO PRIMARY KEY FOUND!');
     } else {
-      primaryKey.rows.forEach((row) => {
+      primaryKey.forEach((row: any) => {
         console.log(`  ✅ ${row.column_name}`);
       });
     }

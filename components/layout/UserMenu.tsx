@@ -2,8 +2,8 @@
 
 import { useState, useRef, useEffect } from 'react';
 import { User, LogOut, ChevronDown } from 'lucide-react';
-import { signOut } from 'next-auth/react';
-import type { Session } from 'next-auth';
+import { authClient } from '@/lib/auth/client';
+import type { Session } from '@/types/better-auth';
 
 interface UserMenuProps {
   user: Session['user'];
@@ -57,7 +57,10 @@ export function UserMenu({ user }: UserMenuProps) {
           </div>
           <div className="py-1">
             <button
-              onClick={() => signOut({ callbackUrl: '/' })}
+              onClick={async () => {
+                await authClient.signOut();
+                window.location.href = '/';
+              }}
               className="flex w-full items-center gap-2 px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
               role="menuitem"
             >

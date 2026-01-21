@@ -18,8 +18,6 @@
     "db:migrate:sessions:optional": "npx tsx scripts/migrate-sessions-add-optional-fields.ts"
   },
   "dependencies": {
-    "@auth/core": "^0.41.1",
-    "@auth/drizzle-adapter": "^1.11.1",
     "@hookform/resolvers": "^3.9.1",
     "@neondatabase/serverless": "^1.0.2",
     "@next/third-parties": "16.1.3",
@@ -27,9 +25,7 @@
     "@types/pg": "^8.15.5",
     "@vercel/analytics": "^1.6.1",
     "@vercel/blob": "^0.27.0",
-    "@vercel/postgres": "^0.10.0",
     "@vercel/speed-insights": "^1.3.1",
-    "bcryptjs": "^2.4.3",
     "better-auth": "^1.4.15",
     "date-fns": "^4.1.0",
     "drizzle-orm": "^0.45.1",
@@ -37,8 +33,6 @@
     "lucide-react": "^0.468.0",
     "mailgun.js": "^12.1.1",
     "next": "16.1.3",
-    "next-auth": "^5.0.0-beta.30",
-    "nodemailer": "^7.0.12",
     "pg": "^8.16.3",
     "postgres": "^3.4.7",
     "react": "19.2.3",
@@ -48,9 +42,7 @@
   },
   "devDependencies": {
     "@tailwindcss/postcss": "^4.1.18",
-    "@types/bcryptjs": "^2.4.6",
     "@types/node": "^22",
-    "@types/nodemailer": "^6.4.16",
     "@types/react": "19.2.8",
     "@types/react-dom": "19.2.3",
     "dotenv": "^17.2.3",
@@ -64,7 +56,6 @@
     "typescript": "^5"
   },
   "overrides": {
-    "@auth/core": "^0.41.1",
     "@types/react": "19.2.8",
     "@types/react-dom": "19.2.3"
   }
