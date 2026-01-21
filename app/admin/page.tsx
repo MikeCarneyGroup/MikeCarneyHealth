@@ -90,7 +90,7 @@ export default async function AdminOverviewPage() {
 
         <div className="card">
           <h2 className="text-lg font-semibold mb-4">Recent Activity</h2>
-          <p className="text-sm text-gray-500">Activity tracking coming soon</p>
+          <p className="text-sm text-gray-500">Activity tracking can be implemented in the future. Please ask our IT Department.</p>
         </div>
       </div>
     </div>

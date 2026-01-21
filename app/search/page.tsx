@@ -1,8 +1,9 @@
 import { db } from '@/lib/db';
-import { news, policies, events } from '@/lib/db/schema';
-import { like, or, eq, and } from 'drizzle-orm';
+import { news, policies, events, announcements, downloads } from '@/lib/db/schema';
+import { or, eq, and, sql } from 'drizzle-orm';
 import Link from 'next/link';
-import { Search, Newspaper, FileText, Calendar } from 'lucide-react';
+import { Search, Newspaper, FileText, Calendar, Megaphone, Download } from 'lucide-react';
+import { auth } from '@/auth';
 
 export const metadata = {
   title: 'Search - Mike Carney Wellbeing Hub',
@@ -15,57 +16,108 @@ export default async function SearchPage({
 }) {
   const { q } = await searchParams;
   const query = q || '';
+  const session = await auth();
 
   let results = {
     news: [] as Array<typeof news.$inferSelect>,
     policies: [] as Array<typeof policies.$inferSelect>,
     events: [] as Array<typeof events.$inferSelect>,
+    announcements: [] as Array<typeof announcements.$inferSelect>,
+    downloads: [] as Array<typeof downloads.$inferSelect>,
   };
 
   if (query.trim()) {
     const searchTerm = `%${query}%`;
 
-    const [newsResults, policyResults, eventResults] = await Promise.all([
-      db
-        .select()
-        .from(news)
-        .where(
-          and(
-            eq(news.published, true),
-            or(like(news.title, searchTerm), like(news.content, searchTerm))
+    // For announcements: if user is logged in, show all published; if not, only show public
+    const announcementCondition = session
+      ? and(eq(announcements.published, true))
+      : and(eq(announcements.published, true), eq(announcements.isPublic, true));
+
+    const [newsResults, policyResults, eventResults, announcementResults, downloadResults] =
+      await Promise.all([
+        db
+          .select()
+          .from(news)
+          .where(
+            and(
+              eq(news.published, true),
+              or(
+                sql`${news.title} ILIKE ${searchTerm}`,
+                sql`${news.content} ILIKE ${searchTerm}`
+              )
+            )
           )
-        )
-        .limit(10),
-      db
-        .select()
-        .from(policies)
-        .where(
-          and(
-            eq(policies.published, true),
-            or(like(policies.title, searchTerm), like(policies.description, searchTerm))
+          .limit(10),
+        db
+          .select()
+          .from(policies)
+          .where(
+            and(
+              eq(policies.published, true),
+              or(
+                sql`${policies.title} ILIKE ${searchTerm}`,
+                sql`${policies.description} ILIKE ${searchTerm}`
+              )
+            )
           )
-        )
-        .limit(10),
-      db
-        .select()
-        .from(events)
-        .where(
-          and(
-            eq(events.published, true),
-            or(like(events.title, searchTerm), like(events.description, searchTerm))
+          .limit(10),
+        db
+          .select()
+          .from(events)
+          .where(
+            and(
+              eq(events.published, true),
+              or(
+                sql`${events.title} ILIKE ${searchTerm}`,
+                sql`${events.description} ILIKE ${searchTerm}`
+              )
+            )
           )
-        )
-        .limit(10),
-    ]);
+          .limit(10),
+        db
+          .select()
+          .from(announcements)
+          .where(
+            and(
+              announcementCondition,
+              or(
+                sql`${announcements.title} ILIKE ${searchTerm}`,
+                sql`${announcements.content} ILIKE ${searchTerm}`
+              )
+            )
+          )
+          .limit(10),
+        db
+          .select()
+          .from(downloads)
+          .where(
+            and(
+              eq(downloads.published, true),
+              or(
+                sql`${downloads.title} ILIKE ${searchTerm}`,
+                sql`${downloads.description} ILIKE ${searchTerm}`
+              )
+            )
+          )
+          .limit(10),
+      ]);
 
     results = {
       news: newsResults,
       policies: policyResults,
       events: eventResults,
+      announcements: announcementResults,
+      downloads: downloadResults,
     };
   }
 
-  const totalResults = results.news.length + results.policies.length + results.events.length;
+  const totalResults =
+    results.news.length +
+    results.policies.length +
+    results.events.length +
+    results.announcements.length +
+    results.downloads.length;
 
   return (
     <div className="py-8">
@@ -145,6 +197,51 @@ export default async function SearchPage({
                 </div>
               </section>
             )}
+
+            {results.announcements.length > 0 && (
+              <section className="mb-8">
+                <h2 className="text-2xl font-semibold mb-4">Announcements</h2>
+                <div className="space-y-4">
+                  {results.announcements.map((announcement) => (
+                    <Link
+                      key={announcement.id}
+                      href={`/announcements/${announcement.id}`}
+                      className="card hover:shadow-md transition-shadow flex items-start gap-3"
+                    >
+                      <Megaphone className="h-5 w-5 text-primary-600 mt-1" aria-hidden="true" />
+                      <div>
+                        <h3 className="font-semibold mb-1">{announcement.title}</h3>
+                        <p className="text-sm text-gray-600 line-clamp-2">{announcement.content}</p>
+                      </div>
+                    </Link>
+                  ))}
+                </div>
+              </section>
+            )}
+
+            {results.downloads.length > 0 && (
+              <section className="mb-8">
+                <h2 className="text-2xl font-semibold mb-4">Downloads</h2>
+                <div className="space-y-4">
+                  {results.downloads.map((download) => (
+                    <Link
+                      key={download.id}
+                      href="/downloads"
+                      className="card hover:shadow-md transition-shadow flex items-start gap-3"
+                    >
+                      <Download className="h-5 w-5 text-primary-600 mt-1" aria-hidden="true" />
+                      <div>
+                        <h3 className="font-semibold mb-1">{download.title}</h3>
+                        {download.description && (
+                          <p className="text-sm text-gray-600">{download.description}</p>
+                        )}
+                        <p className="text-xs text-gray-500 mt-1">{download.category}</p>
+                      </div>
+                    </Link>
+                  ))}
+                </div>
+              </section>
+            )}
           </>
         )}
       </div>
@@ -163,7 +260,7 @@ function SearchForm({ initialQuery }: { initialQuery: string }) {
         type="search"
         name="q"
         defaultValue={initialQuery}
-        placeholder="Search news, policies, events..."
+        placeholder="Search news, policies, events, announcements, downloads..."
         className="input flex-1"
         autoComplete="off"
       />
