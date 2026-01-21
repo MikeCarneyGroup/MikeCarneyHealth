@@ -13,5 +13,18 @@ declare module 'better-auth' {
       name?: string | null;
       image?: string | null;
     };
+    expires: string;
   }
+}
+
+// Export Session type for use in components
+export interface Session {
+  user: {
+    id: string;
+    role: 'staff' | 'editor' | 'admin';
+    email: string;
+    name?: string | null;
+    image?: string | null;
+  };
+  expires: string;
 }
