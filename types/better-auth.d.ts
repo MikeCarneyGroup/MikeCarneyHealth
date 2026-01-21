@@ -15,14 +15,3 @@ declare module 'better-auth' {
     };
   }
 }
-
-// Export Session type for use in components
-export type Session = {
-  user: {
-    id: string;
-    role: 'staff' | 'editor' | 'admin';
-    email: string;
-    name?: string | null;
-    image?: string | null;
-  };
-};
