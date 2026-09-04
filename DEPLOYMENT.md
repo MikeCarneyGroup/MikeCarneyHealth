@@ -154,7 +154,7 @@ vercel env pull .env.local
 
 4. Push database schema:
 ```bash
-npm run db:push
+pnpm run db:push
 ```
 
 ## Step 9: Create First Admin User
@@ -162,7 +162,7 @@ npm run db:push
 1. Visit your deployed app and sign in with an authorized email
 2. Connect to your database using Drizzle Studio:
 ```bash
-npm run db:studio
+pnpm run db:studio
 ```
 
 3. Or use Vercel Postgres dashboard to run SQL:
@@ -242,13 +242,13 @@ Set up regular database backups:
 
 ### Database Migrations
 1. Update schema in `lib/db/schema.ts`
-2. Run `npm run db:push` locally or via Vercel CLI
+2. Run `pnpm run db:push` locally or via Vercel CLI
 3. Test thoroughly before deploying
 
 ### Dependencies Updates
 ```bash
-npm update
-npm run build  # Test locally
+pnpm update
+pnpm run build  # Test locally
 git push       # Deploy to Vercel
 ```
 
