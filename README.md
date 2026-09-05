@@ -49,7 +49,7 @@ A modern, WCAG-compliant staff wellbeing hub and information resource for Mike C
       ```bash
       pnpm install
       # or
-      ppnpm install
+      pnpm install
       # or
       yarn install
       ```
