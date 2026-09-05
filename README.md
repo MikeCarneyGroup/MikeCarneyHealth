@@ -47,7 +47,7 @@ A modern, WCAG-compliant staff wellbeing hub and information resource for Mike C
 2. **Install dependencies**
 
       ```bash
-      pnpm install
+      npm install
       # or
       pnpm install
       # or
@@ -95,16 +95,16 @@ A modern, WCAG-compliant staff wellbeing hub and information resource for Mike C
 
       ```bash
       # Push database schema
-      pnpm run db:push
+      npm run db:push
 
       # Optional: Open Drizzle Studio to view/edit database
-      pnpm run db:studio
+      npm run db:studio
       ```
 
 5. **Run the development server**
 
 ```bash
-pnpm run dev
+npm run dev
 ```
 
 Open [http://localhost:3000](http://localhost:3000) in your browser.
@@ -241,12 +241,12 @@ This application follows WCAG 2.2 AA standards:
 
 ## Scripts
 
-- `pnpm run dev` - Start development server
-- `pnpm run build` - Build for production
-- `pnpm run start` - Start production server
-- `pnpm run lint` - Run ESLint
-- `pnpm run db:push` - Push database schema changes
-- `pnpm run db:studio` - Open Drizzle Studio
+- `npm run dev` - Start development server
+- `npm run build` - Build for production
+- `npm run start` - Start production server
+- `npm run lint` - Run ESLint
+- `npm run db:push` - Push database schema changes
+- `npm run db:studio` - Open Drizzle Studio
 
 ## Support
 

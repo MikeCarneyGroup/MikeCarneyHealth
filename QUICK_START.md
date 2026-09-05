@@ -11,7 +11,7 @@ This guide will get you up and running in 10 minutes.
 ## Step 1: Install Dependencies (2 minutes)
 
 ```bash
-pnpm install
+npm install
 ```
 
 > **Note**: You may see warnings about deprecated packages and moderate vulnerabilities in development dependencies (esbuild/drizzle-kit). These are safe to ignore as they only affect local development tools, not production builds. See "Common Issues" section below for details.
@@ -57,16 +57,16 @@ EMAIL_FROM=""
 
 ```bash
 # Push schema to database
-pnpm run db:push
+npm run db:push
 
 # (Optional) Open database studio to view
-pnpm run db:studio
+npm run db:studio
 ```
 
 ## Step 4: Run Development Server (1 minute)
 
 ```bash
-pnpm run dev
+npm run dev
 ```
 
 Open [http://localhost:3000](http://localhost:3000)
@@ -77,7 +77,7 @@ Open [http://localhost:3000](http://localhost:3000)
 
 2. **Open Drizzle Studio** in another terminal:
    ```bash
-   pnpm run db:studio
+   npm run db:studio
    ```
 
 3. **Navigate to** http://localhost:4983
@@ -119,13 +119,13 @@ After signing in, explore:
 ## Adding Sample Content
 
 ### Via Drizzle Studio:
-1. Run `pnpm run db:studio`
+1. Run `npm run db:studio`
 2. Manually add records to tables
 
 ### Via Seed Script:
 1. Copy `lib/db/seed.example.ts` to `lib/db/seed.ts`
 2. Install tsx: `npm i -D tsx`
-3. Run: `pnpm exec tsx lib/db/seed.ts`
+3. Run: `npx tsx lib/db/seed.ts`
 
 ### Via Admin Panel:
 1. Sign in as admin
@@ -144,7 +144,7 @@ After signing in, explore:
 ### "Database connection error"
 - Check `POSTGRES_URL` is correct
 - Ensure PostgreSQL is running
-- Try: `pnpm run db:push` again
+- Try: `npm run db:push` again
 
 ### "Authentication error"
 - Verify `AUTH_SECRET` is set
@@ -152,9 +152,9 @@ After signing in, explore:
 - For local dev, use Azure AD or modify domain check
 
 ### "Build errors"
-- Run: `pnpm run lint` to check for errors
+- Run: `npm run lint` to check for errors
 - Ensure all environment variables are set
-- Check TypeScript errors: `pnpm exec tsc --noEmit`
+- Check TypeScript errors: `npx tsc --noEmit`
 
 ### "Can't access admin panel"
 - Ensure your user role is 'admin' or 'editor'
@@ -165,19 +165,19 @@ After signing in, explore:
 
 ```bash
 # Start development server
-pnpm run dev
+npm run dev
 
 # Check for errors
-pnpm run lint
+npm run lint
 
 # View database
-pnpm run db:studio
+npm run db:studio
 
 # Build for production (test)
-pnpm run build
+npm run build
 
 # Run production build locally
-pnpm run start
+npm run start
 ```
 
 ## File Upload Setup (For Downloads/Policies)
@@ -206,14 +206,14 @@ For local development, you can:
 
 ```bash
 # Development
-pnpm run dev              # Start dev server
-pnpm run build           # Build for production
-pnpm run start           # Run production build
-pnpm run lint            # Check for errors
+npm run dev              # Start dev server
+npm run build           # Build for production
+npm run start           # Run production build
+npm run lint            # Check for errors
 
 # Database
-pnpm run db:push         # Push schema changes
-pnpm run db:studio       # Open database GUI
+npm run db:push         # Push schema changes
+npm run db:studio       # Open database GUI
 
 # Deployment
 vercel                  # Deploy to Vercel

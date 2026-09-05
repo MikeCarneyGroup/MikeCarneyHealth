@@ -5,12 +5,12 @@ Use this checklist to ensure everything is properly configured before going live
 ## Pre-Deployment Checklist
 
 ### 🔧 Development Setup
-- [ ] All dependencies installed (`pnpm install`)
+- [ ] All dependencies installed (`npm install`)
 - [ ] Environment variables configured
-- [ ] Database schema pushed (`pnpm run db:push`)
-- [ ] Application builds successfully (`pnpm run build`)
+- [ ] Database schema pushed (`npm run db:push`)
+- [ ] Application builds successfully (`npm run build`)
 - [ ] No TypeScript errors
-- [ ] No ESLint errors (`pnpm run lint`)
+- [ ] No ESLint errors (`npm run lint`)
 - [ ] Tested locally on `localhost:3000`
 
 ### 🎨 Content & Branding
