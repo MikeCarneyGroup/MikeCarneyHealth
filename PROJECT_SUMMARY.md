@@ -221,17 +221,17 @@ mike-carney-wellbeing-hub/
 
 ```bash
 # 1. Install dependencies
-npm install
+pnpm install
 
 # 2. Set up environment variables
 cp .env.example .env.local
 # Fill in your values
 
 # 3. Initialize database
-npm run db:push
+pnpm run db:push
 
 # 4. Run development server
-npm run dev
+pnpm run dev
 
 # 5. Open browser
 http://localhost:3000
